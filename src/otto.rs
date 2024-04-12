@@ -3,6 +3,7 @@ use super::board::*;
 use std::io::{self, Write};
 use crate::ottobot;
 
+
 ///Player interacts directly with the board
 ///and the board interacts with the bot where the bot will
 ///"return" a move to place on the board
