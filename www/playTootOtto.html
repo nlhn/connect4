@@ -10,27 +10,28 @@
     please enable javascript in your browser.</noscript>
     <script src="./bootstrap.js"></script>
     <form>
-      <label for="boardSize">Choose a board size:</label><br>
-      <input type="radio" id="standard" name="boardSize" value="0" required>
+      <label for="TboardSize">Choose a board size:</label><br>
+      <input type="radio" id="standard" name="TboardSize" value="0" required>
       <label for="standard">Standard</label><br>
-      <input type="radio" id="large" name="boardSize" value="1">
+      <input type="radio" id="large" name="TboardSize" value="1">
       <label for="large">Large</label><br>
 
-      <label for="gameMode">Choose a game mode:</label><br>
-      <input type="radio" id="vsHuman" name="gameMode" value="0" required>
+      <label for="TgameMode">Choose a game mode:</label><br>
+      <input type="radio" id="vsHuman" name="TgameMode" value="0" required>
       <label for="vsHuman">Vs Human</label><br>
-      <input type="radio" id="vsComputer1" name="gameMode" value="1">
+      <input type="radio" id="vsComputer1" name="TgameMode" value="1">
       <label for="vsComputer1">Vs Computer (Easy)</label><br>
-      <input type="radio" id="vsComputer2" name="gameMode" value="2">
+      <input type="radio" id="vsComputer2" name="TgameMode" value="2">
       <label for="vsComputer2">Vs Computer (Hard)</label><br>
-
-      <label for="gameMode">Choose player(1)'s token:</label><br>
-      <input type="radio" id="toot" name="playerToken" value="0" required>
-      <label for="toot">Toot</label><br>
-      <input type="radio" id="otto" name="playerToken" value="1">
-      <label for="otto">Otto</label><br>
     </form>
-    <button id="Connect4Button">Play!</button>
-    <div id="connect4GameBoard"></div>
+    <button id="TootOttoButton">Play!</button>
+    <div id="tokens" style="display: none;">
+      <input type="radio" id="tokenT" name="token" value="T" checked>
+      <label for="tokenT">T</label>
+      <input type="radio" id="tokenO" name="token" value="O">
+      <label for="tokenO">O</label>
+    </div>
+    <div id="TgameBoard">
+    </div>
   </body>
 </html>
