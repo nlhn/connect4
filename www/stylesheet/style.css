@@ -27,7 +27,7 @@ body {
     background-color: blue;
 }
 
-#gameBoard table {
+#connect4GameBoard table {
     margin: 10px; /* Increase table margin */
     border-collapse: separate;
     border-spacing: 10px; /* Adds space between cells */
@@ -35,11 +35,11 @@ body {
     height: 100%;
 }
 
-#gameBoard td {
+#connect4GameBoard td {
     padding: 0;
 }
 
-#gameBoard .cell {
+#connect4GameBoard .cell {
     width: 60px; /* Increase width for larger circle */
     height: 60px; /* Increase height for larger circle */
     margin: 10px; /* Space out the circles */

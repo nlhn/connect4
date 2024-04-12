@@ -60,8 +60,8 @@ class GameBoard {
 }
 
 document.getElementById('Connect4Button').addEventListener('click', function() {
-    var boardSizeElements = document.getElementsByName('CboardSize');
-    var gameModeElements = document.getElementsByName('CgameMode');
+    var boardSizeElements = document.getElementsByName('boardSize');
+    var gameModeElements = document.getElementsByName('gameMode');
     var selectedSize = -1;
     var selectedMode = -1;
 
@@ -84,42 +84,16 @@ document.getElementById('Connect4Button').addEventListener('click', function() {
 
 });
 
-document.getElementById('TootOttoButton').addEventListener('click', function() {
-  var boardSizeElements = document.getElementsByName('TboardSize');
-  var gameModeElements = document.getElementsByName('TgameMode');
-  var selectedSize = -1;
-  var selectedMode = -1;
-
-  for (var i = 0; i < boardSizeElements.length; i++) {
-      if (boardSizeElements[i].checked) {
-          selectedSize = parseInt(boardSizeElements[i].value, 10);
-          break;
-      }
-  }
-
-  for (var i = 0; i < gameModeElements.length; i++) {
-      if (gameModeElements[i].checked) {
-          selectedMode = parseInt(gameModeElements[i].value, 10);
-          break;
-      }
-  }
-  if (selectedSize != -1 && selectedMode != -1) {
-      drawBoard(selectedSize, selectedMode, "toototto");
-  }
-
-});
-
 function drawBoard(size, mode, gameName) {
-    var rows, cols, gameBoard;
+    var rows, cols, gameBoard
     if (gameName == "connect4") {
+        gameBoard = document.getElementById('connect4GameBoard');
         rows = size == 0 ? 6 : 7;
         cols = size == 0 ? 7 : 10;
-        gameBoard = document.getElementById('CgameBoard');
     } else {
+        gameBoard = document.getElementById('tootGameBoard');
         rows = size == 0 ? 6 : 9;
         cols = size == 0 ? 4 : 6;
-        gameBoard = document.getElementById('TgameBoard');
-        document.getElementById("tokens").style.display = "flex";
     }
     gameBoard.innerHTML = ''; 
     var table = document.createElement('table');
@@ -147,7 +121,6 @@ function drawBoard(size, mode, gameName) {
         table.appendChild(row);
     }
     gameBoard.appendChild(table);
-    
 }
 
 
@@ -223,14 +196,9 @@ function performMove(cellId, game) {
             piece = 'O';
         }
 
-    } else if (game.game == "toototto") {
-        let tokens = document.getElementsByName('token');
-        for (var i = 0; i < tokens.length; i++) {
-          if (tokens[i].checked) {
-              piece = tokens[i].value;
-              break;
-          }
-        }
+    } else if (game.game == "toot") {
+        // piece = document.getElementById('letter').value
+        // fill with letter and change background color
     }
     
     let row = Math.floor(parseInt(cellId.substring(1), 10) / game.width);
