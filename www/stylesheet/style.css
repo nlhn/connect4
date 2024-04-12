@@ -1,0 +1,62 @@
+body {
+    background-color: white;
+    color: blue;
+    font-family: Arial, sans-serif;
+}
+#navbar ul {
+    list-style-type: none;
+    padding: 0;
+}
+#navbar ul li {
+    display: inline-block;
+    position: relative;
+}
+#navbar ul li a {
+    display: block;
+    padding: 10px;
+    color: blue;
+    text-decoration: none;
+}
+
+#navbar ul li:hover ul {
+    display: block;
+}
+
+#navbar ul li ul li a:hover {
+    color: white;
+    background-color: blue;
+}
+
+#connect4GameBoard table {
+    margin: 10px; /* Increase table margin */
+    border-collapse: separate;
+    border-spacing: 10px; /* Adds space between cells */
+    background-color: blue; /* Set the background color for the whole table */
+    height: 100%;
+}
+
+#connect4GameBoard td {
+    padding: 0;
+}
+
+#connect4GameBoard .cell {
+    width: 60px; /* Increase width for larger circle */
+    height: 60px; /* Increase height for larger circle */
+    margin: 10px; /* Space out the circles */
+    border-radius: 50%; /* Makes the input round */
+    border: none; /* Removes the border */
+    display: block;
+    cursor: default; 
+    outline: none; 
+}
+.empty-cell {
+    background-color: white;
+}
+.red-filled {
+    background-color: red;
+}
+.yellow-filled {
+    background-color: yellow;
+}
+  
+  

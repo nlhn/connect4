@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Connect4</title>
+    <link rel="stylesheet" href="stylesheet/style.css">
+  </head>
+  <body>
+    <noscript>This page contains webassembly and javascript content,
+    please enable javascript in your browser.</noscript>
+    <script src="./bootstrap.js"></script>
+    <form>
+      <label for="boardSize">Choose a board size:</label><br>
+      <input type="radio" id="standard" name="boardSize" value="0" required>
+      <label for="standard">Standard</label><br>
+      <input type="radio" id="large" name="boardSize" value="1">
+      <label for="large">Large</label><br>
+
+      <label for="gameMode">Choose a game mode:</label><br>
+      <input type="radio" id="vsHuman" name="gameMode" value="0" required>
+      <label for="vsHuman">Vs Human</label><br>
+      <input type="radio" id="vsComputer1" name="gameMode" value="1">
+      <label for="vsComputer1">Vs Computer (Easy)</label><br>
+      <input type="radio" id="vsComputer2" name="gameMode" value="2">
+      <label for="vsComputer2">Vs Computer (Hard)</label><br>
+    </form>
+    <button id="Connect4Button">Play!</button>
+    <div id="connect4GameBoard"></div>
+  </body>
+</html>
