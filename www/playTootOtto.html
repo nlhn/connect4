@@ -31,6 +31,32 @@
       <input type="radio" id="tokenO" name="token" value="O">
       <label for="tokenO">O</label>
     </div>
-    <div id="TootOttoGameBoard"></div>
+    <div id="TootOttoGameBoard" class="gameBoard"></div>
+    <script>
+      document.getElementById('TootOttoButton').addEventListener('click', function() {
+          var boardSizeElements = document.getElementsByName('TboardSize');
+          var gameModeElements = document.getElementsByName('TgameMode');
+          var selectedSize = -1;
+          var selectedMode = -1;
+
+          for (var i = 0; i < boardSizeElements.length; i++) {
+              if (boardSizeElements[i].checked) {
+                  selectedSize = parseInt(boardSizeElements[i].value, 10);
+                  break;
+              }
+          }
+
+          for (var i = 0; i < gameModeElements.length; i++) {
+              if (gameModeElements[i].checked) {
+                  selectedMode = parseInt(gameModeElements[i].value, 10);
+                  break;
+              }
+          }
+          if (selectedSize != -1 && selectedMode != -1) {
+              document.getElementById('tokens').style.display = "flex";
+              drawBoard(selectedSize, selectedMode, "toototto");
+          }
+      });
+  </script>
   </body>
 </html>

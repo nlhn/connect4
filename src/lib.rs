@@ -1,6 +1,8 @@
 mod connect4;
 mod board;
 mod cli;
+mod otto;
+mod ottobot;
 
 use crate::connect4::{ Connect4Board, Connect4AI };
 use serde::{Serialize, Deserialize};
@@ -110,6 +112,10 @@ pub fn check_win(board: &JsValue, last_player: Option<u32>, game: String, last_c
 
     game.print();
 
+    console::log_1(&format!("performing a move").into());
+    game.perform_move(0, 'X');
+    game.print();
+
     let bool = game.is_terminal();
     
     let result = if bool {
@@ -126,12 +132,12 @@ pub fn check_win(board: &JsValue, last_player: Option<u32>, game: String, last_c
     Ok(result)
 }
 
+
+
 pub fn to_vector(arr: JsValue) -> Vec<Vec<char>> {
-    // Deserialize JsValue to Vec<Vec<String>>
     let arrays: Vec<Vec<String>> = from_value(arr)
         .unwrap_or_else(|_| panic!("Failed to convert from JsValue"));
 
-    // Convert Vec<Vec<String>> to Vec<Vec<char>>
     arrays.iter().map(|inner| {
         inner.iter().flat_map(|s| s.chars()).collect()
     }).collect()

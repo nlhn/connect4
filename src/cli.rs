@@ -1,9 +1,7 @@
 use std::io::stdin;
 use crate::connect4::*;
 use crate::board::{BoardSize, Difficulty};
-// use crate::otto::*;
-// use crate::ottobot::*;
-
+use crate::otto::*;
 
 
 fn get_menu_choice(menu: &str, n: u32, ret: &mut u32) {
@@ -69,27 +67,25 @@ fn play_connect4(size: u32, mode: u32) -> String {
     result
 }
 
-// fn play_otto(size: u32, mode: u32) -> String {
-//     println!("Starting Totto & Otto....");
-//     let size = match size {
-//         1 => BoardSize::Standard,
-//         2 => BoardSize::Large,
-//         _ => BoardSize::Standard,
-//     };
+fn play_otto(size: u32, mode: u32, tok: char) -> String {
+    println!("Starting Toot and Otto....");
+    let size = match size {
+        1 => BoardSize::Standard,
+        2 => BoardSize::Large,
+        _ => BoardSize::Standard,
+    };
 
-//     let mut game = TootOttoBoard::new(size);
+    let mut game = TootOttoBoard::new(size);
 
-//     let result = match mode {
-//         1 => game.host_game(),
-//         // 2 => game.host_game_AI(Difficulty::Easy),
-//         // 3 => game.host_game_AI(Difficulty::Hard),
-//         2 => "(unimplemented!)".to_string(),
-//         3 => "(unimplemented!)".to_string(),
-//         _ => "".to_string(),
-//     };
+    let result = match mode {
+        1 => game.host_game(),
+        2 => game.host_game_AI(Difficulty::Easy, tok),
+        3 => game.host_game_AI(Difficulty::Hard, tok),
+        _ => "".to_string(),
+    };
 
-//     result
-// }
+    result
+}
 
 #[allow(dead_code)]
 pub fn run_cli() {
@@ -123,8 +119,27 @@ pub fn run_cli() {
                 play_connect4(s, gm)
             },
             2u32 => {
-                // play_otto(s, gm)
-                "unimplemented".to_string()
+                let mut tok = 'N';
+                loop {
+                    println!("Please select a token to play as (T or O): ");
+                    let mut s: String = "".to_string();
+
+                    match stdin().read_line(&mut s) {
+                        Err(_) => println!("Something went wrong reading input, please try again."),
+                        Ok(_) => {}
+                    };
+
+                    if s.trim().len() == 1 {
+                        tok = s.trim().chars().next().unwrap();
+                        if tok == 'T' || tok == 'O' {
+                            break;
+                        }
+                    }
+                    println!("Please enter a valid token (T or O).");
+                }
+
+                play_otto(s, gm, tok)
+                
             },
             _ => "Something went wrong, please try again".to_string(),
         };

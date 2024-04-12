@@ -1,4 +1,4 @@
-import * as games from "connect4";
+import * as games from "games";
 
 class GameBoard {
     constructor(rows, cols, mode, game) {
@@ -59,31 +59,6 @@ class GameBoard {
 
 }
 
-document.getElementById('Connect4Button').addEventListener('click', function() {
-    var boardSizeElements = document.getElementsByName('boardSize');
-    var gameModeElements = document.getElementsByName('gameMode');
-    var selectedSize = -1;
-    var selectedMode = -1;
-
-    for (var i = 0; i < boardSizeElements.length; i++) {
-        if (boardSizeElements[i].checked) {
-            selectedSize = parseInt(boardSizeElements[i].value, 10);
-            break;
-        }
-    }
-
-    for (var i = 0; i < gameModeElements.length; i++) {
-        if (gameModeElements[i].checked) {
-            selectedMode = parseInt(gameModeElements[i].value, 10);
-            break;
-        }
-    }
-    if (selectedSize != -1 && selectedMode != -1) {
-        drawBoard(selectedSize, selectedMode, "connect4");
-    }
-
-});
-
 export function drawBoard(size, mode, gameName) {
     var rows, cols, gameBoard
     if (gameName == "connect4") {
@@ -91,9 +66,9 @@ export function drawBoard(size, mode, gameName) {
         rows = size == 0 ? 6 : 7;
         cols = size == 0 ? 7 : 10;
     } else {
-        gameBoard = document.getElementById('tootGameBoard');
-        rows = size == 0 ? 6 : 9;
-        cols = size == 0 ? 4 : 6;
+        gameBoard = document.getElementById('TootOttoGameBoard');
+        rows = size == 0 ? 4 : 6;
+        cols = size == 0 ? 6 : 9;
     }
     gameBoard.innerHTML = ''; 
     var table = document.createElement('table');
@@ -124,11 +99,10 @@ export function drawBoard(size, mode, gameName) {
 }
 
 
-function getPlayerMove(id, game) {
-    console.log("selected id: ", id);
+function getPlayerMove(cell_selected, game) {
     var maxRows = game.height;
     var maxCols = game.width;
-    var selectedColumn = parseInt(id.substring(1), 10) % maxCols;
+    var selectedColumn = parseInt(cell_selected.substring(1), 10) % maxCols;
     var cellId = getEmptyCell(selectedColumn, maxRows, maxCols);
 
     if (cellId == -1) {
@@ -196,9 +170,21 @@ function performMove(cellId, game) {
             piece = 'O';
         }
 
-    } else if (game.game == "toot") {
-        // piece = document.getElementById('letter').value
-        // fill with letter and change background color
+    } else {
+        var tokens = document.getElementsByName('token');
+        for (var i = 0; i < tokens.length; i++) {
+            if (tokens[i].checked) {
+                piece = tokens[i].value;
+                break;
+            }
+        }
+        if (piece == 'T') {
+            cell.classList.add('toot-token');
+            cell.value = piece;
+        } else {
+            cell.classList.add('otto-token');
+            cell.value = piece;
+        }
     }
     
     let row = Math.floor(parseInt(cellId.substring(1), 10) / game.width);

@@ -9,7 +9,7 @@ pub struct OttoBot {
 }
 
 impl OttoBot {
-    pub fn new(difficulty: Difficulty,ai_token: char) -> OttoBot {
+    pub fn new(difficulty: Difficulty, ai_token: char) -> OttoBot {
         let depth = match difficulty {
             Difficulty::Easy => 3,
             Difficulty::Hard => 5,

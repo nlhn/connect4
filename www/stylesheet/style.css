@@ -27,7 +27,7 @@ body {
     background-color: blue;
 }
 
-#connect4GameBoard table {
+.gameBoard table {
     margin: 10px; /* Increase table margin */
     border-collapse: separate;
     border-spacing: 10px; /* Adds space between cells */
@@ -35,11 +35,11 @@ body {
     height: 100%;
 }
 
-#connect4GameBoard td {
+.gameBoard td {
     padding: 0;
 }
 
-#connect4GameBoard .cell {
+.gameBoard .cell {
     width: 60px; /* Increase width for larger circle */
     height: 60px; /* Increase height for larger circle */
     margin: 10px; /* Space out the circles */
@@ -58,5 +58,21 @@ body {
 .yellow-filled {
     background-color: yellow;
 }
+
+.toot-token{
+    background-color: lightgreen;
+    font-size: 30px; 
+    line-height: 60px;
+    text-align: center; 
+    color: black;
+    display: block; 
+}
   
-  
+.otto-token{
+    background-color: lightblue;
+    font-size: 30px; 
+    line-height: 60px;
+    text-align: center; 
+    color: black;
+    display: block;
+}
