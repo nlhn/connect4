@@ -7,3 +7,10 @@ import("./index.js")
     window.drawBoard = module.drawBoard;
   })
   .catch(e => console.error("Error importing `index.js`:", e));
+
+
+import("./toot.js")
+  .then((module) => {
+    window.drawBoardToot = module.drawBoardToot;
+  })
+  .catch(e => console.error("Error importing `toot.js`:", e));

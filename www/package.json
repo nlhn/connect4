@@ -34,6 +34,6 @@
     "copy-webpack-plugin": "^5.0.0"
   },
   "dependencies": {
-    "games": "file:../pkg"
+    "connect4": "file:../pkg"
   }
 }
