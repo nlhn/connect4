@@ -192,3 +192,4 @@ function performMove(cellId, game) {
     
     game.updateBoard(row, col, piece);
 }
+
