@@ -2,8 +2,8 @@
 // asynchronously. This `bootstrap.js` file does the single async import, so
 // that no one else needs to worry about it again.
 
-import("./index.js")
+import("./connect4.js")
   .then((module) => {
     window.drawBoard = module.drawBoard;
   })
-  .catch(e => console.error("Error importing `index.js`:", e));
+  .catch(e => console.error("Error importing `connect4.js`:", e));

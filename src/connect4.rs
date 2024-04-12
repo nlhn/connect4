@@ -1,11 +1,11 @@
 use std::cmp;
-use web_sys::console;
-use rand::thread_rng;
 use rand::seq::SliceRandom;
 use std::io::{self, Write};
 use std::fmt;
 use super::board::*;
+use wasm_bindgen::prelude::*;
 
+#[wasm_bindgen]
 pub struct Connect4Board {
     width: u32,
     height: u32,
@@ -15,7 +15,9 @@ pub struct Connect4Board {
     last_player: Option<char>,
 }
 
+#[wasm_bindgen]
 impl Connect4Board {
+    #[wasm_bindgen(constructor)]
     pub fn new(size: BoardSize) -> Connect4Board {
         let (width, height) = match size {
             BoardSize::Standard => (7, 6),
@@ -32,25 +34,33 @@ impl Connect4Board {
         }
     }
 
-    pub fn print(&self) {
-        console::log_1(&format!("Width: {}", self.width).into());
-        console::log_1(&format!("Height: {}", self.height).into());
-        for (i, row) in self.board.iter().enumerate() {
-            console::log_1(&format!("Row {}: {:?}", i, row).into());
-        }
-        console::log_1(&format!("Last row: {:?}", self.last_row).into());
-        console::log_1(&format!("Last col: {:?}", self.last_col).into());
-        console::log_1(&format!("Last player: {:?}", self.last_player).into());
+    
+    #[wasm_bindgen]
+    pub fn width(&self) -> u32 {
+        self.width
     }
 
-    pub fn available_moves(&self) -> Vec<u32> {
-        (0..self.width).filter(|&col| self.allows_move(col)).collect()
+    #[wasm_bindgen]
+    pub fn height(&self) -> u32 {
+        self.height
     }
 
-    pub fn allows_move(&self, col: u32) -> bool {
-        col < self.width && self.board[0][col as usize] == ' '
+    #[wasm_bindgen]
+    pub fn last_row(&self) -> Option<u32> {
+        self.last_row
     }
 
+    #[wasm_bindgen]
+    pub fn last_col(&self) -> Option<u32> {
+        self.last_col
+    }
+
+    #[wasm_bindgen]
+    pub fn last_player(&self) -> Option<char> {
+        self.last_player
+    }
+
+    #[wasm_bindgen]
     pub fn perform_move(&mut self, col: u32, ox: char) {
         let col = col as usize;
         for row in (0..self.height as usize).rev() {
@@ -62,6 +72,27 @@ impl Connect4Board {
                 break;
             }
         }
+    }
+
+    #[wasm_bindgen]
+    pub fn is_terminal(&self) -> bool {
+        self.is_draw() || self.has_winner()
+    }
+
+    #[wasm_bindgen]
+    pub fn is_draw(&self) -> bool {
+        self.available_moves().is_empty()
+    }
+}
+
+impl Connect4Board {
+
+    pub fn available_moves(&self) -> Vec<u32> {
+        (0..self.width).filter(|&col| self.allows_move(col)).collect()
+    }
+
+    pub fn allows_move(&self, col: u32) -> bool {
+        col < self.width && self.board[0][col as usize] == ' '
     }
 
     pub fn set_board(&mut self, new_board: Vec<Vec<char>>) {
@@ -90,11 +121,6 @@ impl Connect4Board {
         }
     }
 
-    pub fn is_terminal(&self) -> bool {
-        console::log_1(&format!("Checking").into());
-        self.has_winner() || self.is_draw()
-    }
-
     pub fn has_winner(&self) -> bool {
         let row = self.last_row;
         let col = self.last_col;
@@ -103,11 +129,6 @@ impl Connect4Board {
         if row.is_none() || col.is_none() || ox.is_none() {
             return false;
         }
-
-        
-        // console::log_1(&format!("Row: {:?}", row).into());
-        // console::log_1(&format!("Col: {:?}", col).into());
-        // console::log_1(&format!("Player: {:?}", ox).into());
 
         let row = row.unwrap() as usize;
         let col = col.unwrap() as usize;
@@ -150,10 +171,6 @@ impl Connect4Board {
         }
 
         false
-    }
-
-    pub fn is_draw(&self) -> bool {
-        self.available_moves().is_empty()
     }
 
     pub fn game_value(&self) -> i32 {
@@ -262,11 +279,14 @@ impl fmt::Display for Connect4Board {
     }
 }
 
+#[wasm_bindgen]
 pub struct Connect4AI {
     depth: u32,
 }
 
+#[wasm_bindgen]
 impl Connect4AI {
+    #[wasm_bindgen(constructor)]
     pub fn new(difficulty: Difficulty) -> Connect4AI {
         let depth = match difficulty {
             Difficulty::Easy => 1,
@@ -275,6 +295,7 @@ impl Connect4AI {
         Connect4AI { depth }
     }
 
+    #[wasm_bindgen]
     pub fn best_move(&self, board: &mut Connect4Board, ox: char) -> u32 {
         let maximizing_player = ox == 'X';
         self.minimax(board, self.depth, i32::MIN, i32::MAX, maximizing_player).1
