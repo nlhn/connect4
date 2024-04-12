@@ -13,12 +13,12 @@ use std::i32;
 use web_sys::console;
 use wasm_bindgen::prelude::*;
 use crate::otto::TootOttoBoard;
-// use std::sync::{Mutex,Arc};
-// use lazy_static::lazy_static;
+use std::sync::{Mutex,Arc};
+use lazy_static::lazy_static;
 
 lazy_static!{
     //create an instance of the otto board
-    static ref OTTO_BOARD: Mutex<Arc<TootOttoBoard>>> = Mutex::new(Arc::new(TootOttoBoard::new(BoardSize::Standard)))
+    static ref OTTO_BOARD: Mutex<Arc<TootOttoBoard>> = Mutex::new(Arc::new(TootOttoBoard::new(BoardSize::Standard)));
 }
 
 
