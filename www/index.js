@@ -84,7 +84,7 @@ document.getElementById('Connect4Button').addEventListener('click', function() {
 
 });
 
-function drawBoard(size, mode, gameName) {
+export function drawBoard(size, mode, gameName) {
     var rows, cols, gameBoard
     if (gameName == "connect4") {
         gameBoard = document.getElementById('connect4GameBoard');

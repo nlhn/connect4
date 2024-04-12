@@ -8,7 +8,7 @@
   <body>
     <noscript>This page contains webassembly and javascript content,
     please enable javascript in your browser.</noscript>
-    <script src="./bootstrap.js"></script>
+    <script type="module" src="./bootstrap.js"></script>
     <form>
       <label for="boardSize">Choose a board size:</label><br>
       <input type="radio" id="standard" name="boardSize" value="0" required>
@@ -26,5 +26,31 @@
     </form>
     <button id="Connect4Button">Play!</button>
     <div id="connect4GameBoard"></div>
+    <script>
+        document.getElementById('Connect4Button').addEventListener('click', function() {
+            var boardSizeElements = document.getElementsByName('boardSize');
+            var gameModeElements = document.getElementsByName('gameMode');
+            var selectedSize = -1;
+            var selectedMode = -1;
+
+            for (var i = 0; i < boardSizeElements.length; i++) {
+                if (boardSizeElements[i].checked) {
+                    selectedSize = parseInt(boardSizeElements[i].value, 10);
+                    break;
+                }
+            }
+
+            for (var i = 0; i < gameModeElements.length; i++) {
+                if (gameModeElements[i].checked) {
+                    selectedMode = parseInt(gameModeElements[i].value, 10);
+                    break;
+                }
+            }
+            if (selectedSize != -1 && selectedMode != -1) {
+                drawBoard(selectedSize, selectedMode, "connect4");
+            }
+
+        });
+    </script>
   </body>
 </html>
