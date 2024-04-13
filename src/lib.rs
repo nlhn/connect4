@@ -4,13 +4,7 @@ mod cli;
 mod otto;
 mod ottobot;
 
-use crate::connect4::{ Connect4Board, Connect4AI };
-use cli::run_cli;
-use serde::{Serialize, Deserialize};
-use serde_wasm_bindgen::{from_value, to_value};
 use crate::board::*;
-use std::i32;
-use web_sys::console;
 use wasm_bindgen::prelude::*;
 use crate::otto::TootOttoBoard;
 use std::sync::{Mutex,Arc};
