@@ -84,6 +84,8 @@
 
           if (selectedSize != -1 && selectedMode != -1) {
               document.getElementById('tokens').style.display = "flex";
+              document.getElementById('tokens').style.justifyContent = "center";
+              document.getElementById('tokens').style.alignItems = 'center';
               drawBoardToot(selectedSize, selectedMode, selectedPlayer);
           }
       });
