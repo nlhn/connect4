@@ -6,6 +6,19 @@
     <link rel="stylesheet" href="stylesheet/style.css">
   </head>
   <body>
+    <div id="navbar">
+      <ul>
+        <li>
+          <a href="playConnect4.html">Connect4</a>
+        </li>
+        <li>
+          <a>OTTO/TOOT</a>
+        </li>
+        <li>
+          <a href="howToPlay.html">How to Play</a>
+        </li>
+      </ul>
+    </div>
     <h1>Toot and Otto</h1>
     <noscript>This page contains webassembly and javascript content,
     please enable javascript in your browser.</noscript>
@@ -71,6 +84,8 @@
 
           if (selectedSize != -1 && selectedMode != -1) {
               document.getElementById('tokens').style.display = "flex";
+              document.getElementById('tokens').style.justifyContent = "center";
+              document.getElementById('tokens').style.alignItems = 'center';
               drawBoardToot(selectedSize, selectedMode, selectedPlayer);
           }
       });
