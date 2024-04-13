@@ -56,7 +56,7 @@ export function drawBoardToot(size, mode, playerTok) {
             input.className = ["cell", "empty-cell"].join(' ');
             input.readOnly = true;
             input.onclick = function() {
-                if (game.winner === null) {
+                if (game.winner === null && game.board.has_winner() ==='f') {
                     startTurn(this.id, game);
                 }
             };
@@ -80,7 +80,7 @@ function startTurn(cell_selected, game) {
     }
 
     performMove(cellId, game);
-
+    
     // AI move
     if (!endGame(game) && game.mode != 0) {
         getAIMove(game);
@@ -88,9 +88,6 @@ function startTurn(cell_selected, game) {
 }
 
 function endGame(game) {
-    if (!game.board.is_terminal()) {
-        return false;
-    }
 
     let result = game.board.has_winner();
     if (result === 'w') {
@@ -109,6 +106,10 @@ function endGame(game) {
     }else if (result === 't') {
         game.winner = 3;
         alert("TIE!");
+    }
+
+    if (!game.board.is_terminal()) {
+        return false;
     }
 
     return true;
@@ -175,6 +176,7 @@ function performMove(cellId, game) {
     console.log("Turn " + turn)
     game.board.perform_move_plz(col, piece, turn);
     console.log("Player move: " + cellId + " " + piece);
+    var bool = endGame(game);
     game.nextTurn();
 }
 

@@ -77,7 +77,7 @@ impl TootOttoBoard {
     ///Takes a column and a token and places the token on that column
     #[wasm_bindgen]
     pub fn perform_move_plz(&mut self, col: u32, tok: char, player: char) {
-        println!("Player: {}, Token: {}, Column: {}", player, tok, col);
+        //println!("Player: {}, Token: {}, Column: {}", player, tok, col);
         // decrement from the bottom row to the top row
         for row in (0..self.height).rev(){
             if self.board[row as usize][col as usize as usize] == ' ' {
@@ -92,6 +92,7 @@ impl TootOttoBoard {
 
     #[wasm_bindgen]
     pub fn is_terminal(&mut self) -> bool {
+        console::log_1(&"is_terminal".into());
         if (self.has_winner() !='f') || self.is_draw() {
             return true;
         }
