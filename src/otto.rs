@@ -2,7 +2,7 @@ use std::{collections:: HashSet, fmt};
 use super::board::*;
 use std::io::{self, Write};
 use crate::ottobot;
-
+use wasm_bindgen::prelude::*;
 
 ///Player interacts directly with the board
 ///and the board interacts with the bot where the bot will
@@ -10,22 +10,25 @@ use crate::ottobot;
 ///
 /// The board will keep track of the game state and the bot 
 
+#[wasm_bindgen]
 pub struct TootOttoBoard {
-    pub board: Vec<Vec<char>>,
+    board: Vec<Vec<char>>,
 
     //for custom size
-    pub width: usize,
-    pub height: usize,
+    width: u32,
+    height: u32,
 
     //winning cond checkers
-    pub last_player: Option<char>, //'o' for otto and 't' for toot
-    pub last_row: Option<usize>,
-    pub last_col: Option<usize>,
+    last_player: Option<char>, //'o' for otto and 't' for toot
+    last_row: Option<u32>,
+    last_col: Option<u32>,
 
-    pub winner: Option<char>,
+    winner: Option<char>,
 }
 
+#[wasm_bindgen]
 impl TootOttoBoard {
+    #[wasm_bindgen(constructor)]
     pub fn new(size: BoardSize) -> TootOttoBoard {
         let (width, height) = match size {
             BoardSize::Standard => (6, 4),
@@ -35,7 +38,7 @@ impl TootOttoBoard {
         TootOttoBoard {
             width,
             height,
-            board: vec![vec![' '; width]; height],
+            board: vec![vec![' '; width as usize]; height as usize],
             last_row: None,
             last_col: None,
             last_player: None, 
@@ -44,29 +47,38 @@ impl TootOttoBoard {
 
     }
 
-    /// Returns a list(HashSet) of available moves on the board
-    pub fn available_moves(&self) -> Vec<usize>{
-        let mut moves = Vec::new();
-        for col in 0..self.width {
-            if self.allows_move(col) {
-                moves.push(col);
-            }
-        }
-        return moves;
+    #[wasm_bindgen]
+    pub fn width(&self) -> u32 {
+        self.width
     }
 
-    ///Takes a column and reutrns true if a move can be made into
-    ///that column. False otherwise
-    pub fn allows_move(&self, col: usize) -> bool{
-        col < self.width && self.board[0][col] == ' '
+    #[wasm_bindgen]
+    pub fn height(&self) -> u32 {
+        self.height
     }
 
+    #[wasm_bindgen]
+    pub fn last_row(&self) -> Option<u32> {
+        self.last_row
+    }
+
+    #[wasm_bindgen]
+    pub fn last_col(&self) -> Option<u32> {
+        self.last_col
+    }
+
+    #[wasm_bindgen]
+    pub fn get_winner(&self) -> Option<char> {
+        self.winner
+    }
+
+    #[wasm_bindgen]
     ///Takes a column and a token and places the token on that column
-    pub fn perform_move(&mut self, col: usize, tok: char, player: char) {
-        /// decrement from the bottom row to the top row
+    pub fn perform_move(&mut self, col: u32, tok: char, player: char) {
+        // decrement from the bottom row to the top row
         for row in (0..self.height).rev(){
-            if self.board[row][col] == ' ' {
-                self.board[row][col] = tok;
+            if self.board[row as usize][col as usize as usize] == ' ' {
+                self.board[row as usize][col as usize as usize] = tok;
                 self.last_row = Some(row);
                 self.last_col = Some(col);
                 self.last_player = Some(player);
@@ -75,23 +87,7 @@ impl TootOttoBoard {
         }
     }
 
-
-    ///Takes a row and column and returns the token at that position
-    pub fn get(&self, row: usize, col: usize) -> char {
-        self.board[row][col]
-    }
-
-    ///Takes a column and removes the token from that column
-    /// this is used to undo a move (for AI)
-    pub fn undo_move(&mut self, col: usize) {
-        for row in 0..self.height {
-            if self.board[row][col] != ' ' {
-                self.board[row][col] = ' ';
-                break;
-            }
-        }
-    }
-
+    #[wasm_bindgen]
     pub fn is_terminal(&mut self) -> bool {
         if (self.has_winner() !='f') || self.is_draw() {
             return true;
@@ -99,10 +95,17 @@ impl TootOttoBoard {
         return false;
     }
 
+    #[wasm_bindgen]
+    pub fn is_draw(&self) -> bool {
+        self.available_moves().is_empty()
+    }
+
+    
     ///Takes a board and checks if the board is in a winning position
     ///returns "w" if there is a winner
     /// "t" if the game is a tie
     /// "f" if the game is still in progress
+    #[wasm_bindgen]
     pub fn has_winner(&mut self) -> char {
 
         let row = self.last_row;
@@ -124,7 +127,7 @@ impl TootOttoBoard {
         //check every row and col
         for row in (0..rows).rev() {
             for col in 0..cols {
-                let token = self.board[row][col];
+                let token = self.board[row as usize][col as usize];
 
                 if token == ' '{
                     continue;
@@ -141,9 +144,9 @@ impl TootOttoBoard {
 
                 // Check right
                 if col + 3 < cols
-                    && (self.board[row][col + 1] == opposite)
-                    && (self.board[row][col + 2] == opposite)
-                    && (self.board[row][col + 3] == token)
+                    && (self.board[row as usize][col as usize + 1] == opposite)
+                    && (self.board[row as usize][col as usize + 2] == opposite)
+                    && (self.board[row as usize][col as usize + 3] == token)
                 {
                     winners_set.insert(token);
                     continue;
@@ -151,9 +154,9 @@ impl TootOttoBoard {
 
                 if (row as i32) - 3 >= 0 {
                     // Check up
-                    if(self.board[row-1][col] == opposite)
-                        &&(self.board[row-2][col] == opposite)
-                        &&(self.board[row-3][col] == token)
+                    if(self.board[row as usize -1][col as usize] == opposite)
+                        &&(self.board[row as usize -2][col as usize] == opposite)
+                        &&(self.board[row as usize -3][col as usize] == token)
                     {
                         winners_set.insert(token);
                         continue;
@@ -161,9 +164,9 @@ impl TootOttoBoard {
 
                     // Check up and right
                     if col  + 3 < cols
-                        && (self.board[row-1][col+1] == opposite)
-                        && (self.board[row-2][col+2] == opposite)
-                        && (self.board[row-3][col+3] == token)
+                        && (self.board[row as usize -1][col as usize+1] == opposite)
+                        && (self.board[row as usize -2][col as usize+2] == opposite)
+                        && (self.board[row as usize -3][col as usize+3] == token)
                     {
                         winners_set.insert(token);
                         continue;
@@ -171,9 +174,9 @@ impl TootOttoBoard {
 
                     // Check up and left
                     if (col as i32) - 3 >= 0
-                        && (self.board[row-1][col-1] == opposite)
-                        && (self.board[row-2][col-2] == opposite)
-                        && (self.board[row-3][col-3] == token)
+                        && (self.board[row as usize -1][col as usize-1] == opposite)
+                        && (self.board[row as usize -2][col as usize-2] == opposite)
+                        && (self.board[row as usize -3][col as usize-3] == token)
                     {
                         winners_set.insert(token);
                         continue;
@@ -196,9 +199,46 @@ impl TootOttoBoard {
         }
     }
 
-    pub fn is_draw(&self) -> bool {
-        self.available_moves().is_empty()
+    ///Takes a column and reutrns true if a move can be made into
+    ///that column. False otherwise
+    #[wasm_bindgen]
+    pub fn allows_move(&self, col: u32) -> bool{
+        col < self.width() as u32 && self.board[0][col as usize] == ' '
     }
+}
+
+impl TootOttoBoard {
+
+    /// Returns a list(HashSet) of available moves on the board
+    pub fn available_moves(&self) -> Vec<u32>{
+        let mut moves = Vec::new();
+        for col in 0..self.width {
+            if self.allows_move(col) {
+                moves.push(col);
+            }
+        }
+        return moves;
+    }
+
+
+    ///Takes a row and column and returns the token at that position
+    pub fn get(&self, row: usize, col: usize) -> char {
+        self.board[row][col]
+    }
+
+    ///Takes a column and removes the token from that column
+    /// this is used to undo a move (for AI)
+    pub fn undo_move(&mut self, col: usize) {
+        for row in 0..self.height {
+            if self.board[row as usize][col as usize] != ' ' {
+                self.board[row as usize][col as usize] = ' ';
+                break;
+            }
+        }
+    }
+
+
+
 
     ///Returns the value of the game
     pub fn game_value(&mut self) -> i32 {
@@ -217,7 +257,7 @@ impl TootOttoBoard {
     ///this will return a uszie representing the column the player wants to place
     ///Dont forget error handling
     /// allows_move() will be used to check if the move is valid
-    pub fn get_player_move(&self) -> (usize, char) {
+    pub fn get_player_move(&self) -> (u32, char) {
         loop {
             print!("Player's choice (enter as \"column token\"): ");
             io::stdout().flush().unwrap();
@@ -231,7 +271,7 @@ impl TootOttoBoard {
                 continue;
             }
 
-            let col: usize = match player_move[0].parse() {
+            let col: u32 = match player_move[0].parse() {
                 Ok(col) => col,
                 Err(_) => {
                     println!("Please enter a valid column number");
@@ -285,7 +325,7 @@ impl TootOttoBoard {
             }
 
             let (player_move_col, player_move_token) = self.get_player_move();
-            self.perform_move(player_move_col, player_move_token, turn);
+            self.perform_move(player_move_col as u32, player_move_token, turn);
             moves.push_str(&player_move_col.to_string());
 
             //check if the game is over
@@ -313,6 +353,25 @@ impl TootOttoBoard {
         moves
     }
 
+    //get the ai move for a state of the current board
+    pub fn get_ai_move(&mut self, ai_tok:char, difficulty_var:u32) -> (u32, char){
+
+        let difficulty = match difficulty_var {
+            1 => Difficulty::Easy,
+            2 => Difficulty::Hard,
+            _ => Difficulty::Easy,
+        };
+
+        let ai = ottobot::OttoBot::new(difficulty, ai_tok);
+        let ai_move_string = ai.best_move(self, ai_tok);
+        let ai_move: Vec<char> = ai_move_string.chars().collect();
+        let ai_move_char = ai_move[1];
+        let ai_move = ai_move[0].to_digit(10).unwrap();
+        (ai_move as u32, ai_move_char)
+    }
+
+
+
     pub fn host_game_AI(&mut self, difficulty: Difficulty, tok: char) -> String {
         println!("Welcome to Toot and Otto!\n");
         let mut game_over = false;
@@ -328,12 +387,15 @@ impl TootOttoBoard {
 
             if turn == ai_tok {
                 println!("AI is thinking...");
-                let (ai_move, ai_move_char) = ai.best_move(self, ai_tok);
-                self.perform_move(ai_move, ai_move_char, ai_tok);
+                let ai_move_string = ai.best_move(self, ai_tok);
+                let ai_move: Vec<char> = ai_move_string.chars().collect();
+                let ai_move_char = ai_move[1];
+                let ai_move = ai_move[0].to_digit(10).unwrap();
+                self.perform_move(ai_move as u32, ai_move_char, ai_tok);
                 moves.push_str(&ai_move.to_string());
             } else {
                 let (player_move_col, player_move_token) = self.get_player_move();
-                self.perform_move(player_move_col, player_move_token, turn);
+                self.perform_move(player_move_col as u32, player_move_token, turn);
                 moves.push_str(&player_move_col.to_string());
             }
 
