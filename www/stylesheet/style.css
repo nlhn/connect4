@@ -1,54 +1,117 @@
 body {
-    background-color: white;
-    color: blue;
+    background-color: #f2f2f2; 
+    color: #333; 
     font-family: Arial, sans-serif;
+    text-align: center; 
+    margin: 0; 
 }
+
+/* Navigation bar styling */
+#navbar {
+    background-color: #333; 
+    padding: 10px 0; 
+    margin-bottom: 20px; 
+}
+
 #navbar ul {
     list-style-type: none;
     padding: 0;
-}
-#navbar ul li {
+    margin: 0;
     display: inline-block;
-    position: relative;
+    width: 100%;
 }
+
+#navbar ul li {
+    display: inline;
+}
+
 #navbar ul li a {
-    display: block;
-    padding: 10px;
-    color: blue;
+    padding: 10px 15px;
+    color: white; 
     text-decoration: none;
+    display: inline-block;
 }
 
-#navbar ul li:hover ul {
-    display: block;
+#navbar ul li a:hover, #navbar ul li a:active {
+    background-color: #ddd; 
+    color: black; 
 }
 
-#navbar ul li ul li a:hover {
-    color: white;
-    background-color: blue;
+
+h1 {
+    font-size: 28px; 
+    margin-bottom: 5px;
+}
+
+/* Center the form and adjust the layout */
+form {
+    display: block; 
+    margin: auto; 
+    max-width: 300px; 
+}
+
+/* Style the radio buttons and labels for better alignment */
+form label, form input[type="radio"] {
+    cursor: pointer;
+    padding: 2px;
+    vertical-align: middle; 
+    display: inline-block; 
+}
+
+/* Button styling */
+button {
+    background-color: #333;
+    color: white; 
+    border: none;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+/* Center the play button */
+#Connect4Button {
+    display: block; 
+    margin: 10px auto; 
+    padding: 10px 20px;
+}
+
+button:hover {
+    background-color: #555;
+}
+
+/* Center the game board and ensure it fits the screen */
+.gameBoard {
+    display: flex;
+    justify-content: center; 
+    padding: 20px 0; 
+    margin-bottom: 20px; 
 }
 
 .gameBoard table {
-    margin: 10px; /* Increase table margin */
+    margin: 0 auto; 
     border-collapse: separate;
-    border-spacing: 10px; /* Adds space between cells */
-    background-color: blue; /* Set the background color for the whole table */
-    height: 100%;
+    border-spacing: 10px;
+    background-color: #333; 
+    max-width: 90%; 
 }
 
-.gameBoard td {
-    padding: 0;
-}
-
+/* Responsive cell sizes */
 .gameBoard .cell {
-    width: 60px; /* Increase width for larger circle */
-    height: 60px; /* Increase height for larger circle */
-    margin: 10px; /* Space out the circles */
-    border-radius: 50%; /* Makes the input round */
-    border: none; /* Removes the border */
-    display: block;
+    width: 10vw; 
+    height: 10vw; 
+    max-width: 60px; 
+    max-height: 60px; 
+    border-radius: 50%;
     cursor: default; 
     outline: none; 
+    border: none;
 }
+
 .empty-cell {
     background-color: white;
 }
@@ -75,4 +138,28 @@ body {
     text-align: center; 
     color: black;
     display: block;
+} 
+
+.content {
+    max-width: 800px; 
+    margin: 0 auto; 
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); 
+    background-color: white; 
+    border-radius: 5px; 
 }
+.content h1, h3 {
+    color: #333;
+    text-align: left; 
+}
+
+p {
+    text-align: left; 
+    line-height: 1.6; 
+    color: #555; 
+}
+
+#tokens {
+    margin: 5px auto; 
+}
+  
