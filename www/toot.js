@@ -1,67 +1,47 @@
-import * as games from "connect4";
+import { BoardSize,Difficulty,TootOttoBoard,OttoBot } from "connect4";
 
 class GameBoard {
-    constructor(rows, cols, mode) {
-        this.height = rows;
-        this.width = cols;
+    constructor(size, mode, playerTok) {
+        this.size = size == 0 ? BoardSize.Standard : BoardSize.Large;
         this.board = new Array(this.height).fill().map(() => new Array(this.width).fill(' '));
         this.mode = mode; // 0 for player vs player, 1 for easy AI, 2 for hard AI
         this.winner = null; // 0 for O win, 1 for T win, 2 for draw, 3 for tie
         this.turn = 'T'; // T for Toot, O for Otto
+        this.playerTok = playerTok;
+        this.ai = this.mode !== null ? new OttoBot(this.mode, this.playerTok == 'T' ? 'O' : 'T') : null;
     }
 
-    init(size){
-        games.toot_init_board(size)
+    get_mode(mode) {
+        if (mode == 0) {
+            return null;
+        } else if (mode == 1) {
+            return Difficulty.Easy;
+        } else {
+            return Difficulty.Hard;
+        }
+    }
+
+    nextTurn() {
+        this.turn = this.turn === 'X' ? 'O' : 'X';
     }
 
     updateBoard(row, col, piece) {
         this.board[row][col] = piece;
     }
 
-    checkWin() {
-        // this.result = games.check_win(this.board, this.last_player, this.game, this.last_col, this.last_row);
-        // console.log(this.result);
-        // return this.result != null
-        try {
-            const result = games.toot_has_winner();
-            // this.result = games.check_win(this);
-            console.log(result);  
-            return this.result !== null;
-        } catch (error) {
-            console.error("Failed to process game data:", error);
-            return false;
-        }
-    }
-
-
-    bestMove() {
-        try {
-            let move = games.best_move(this);
-            console.log(move);  
-            return move;
-        } catch (error) {
-            console.error("Failed to process game data:", error);
-            return 0;
-        }
-        
-        // return games.best_move(this.board, this.last_player, this.game, this.last_col, this.last_row, this.mode);
-    }
-
 }
 
-export function drawBoardToot(size, mode) {
+export function drawBoardToot(size, mode, playerTok) {
     var rows, cols, gameBoard
-
+    var game = new GameBoard(size, mode, playerTok);
     gameBoard = document.getElementById('TootOttoGameBoard');
-    rows = size == 0 ? 4 : 6;
-    cols = size == 0 ? 6 : 9;
-
+    rows = game.size == BoardSize.Standard ? 4 : 6;
+    cols = game.size == BoardSize.Standard ? 6 : 9;
     gameBoard.innerHTML = ''; 
     var table = document.createElement('table');
     table.className = "ui";
 
-    let game = new GameBoard(rows, cols, mode);
-    game.init(size);
+    game.turn = playerTok;
 
     console.log("drawBoardToot called");
 
@@ -76,8 +56,8 @@ export function drawBoardToot(size, mode) {
             input.className = ["cell", "empty-cell"].join(' ');
             input.readOnly = true;
             input.onclick = function() {
-                if (game.toot_is_terminal() === false) {
-                    getMove(this.id, game);
+                if (game.winner === null) {
+                    startTurn(this.id, game);
                 }
             };
             cell.appendChild(input);
@@ -89,13 +69,13 @@ export function drawBoardToot(size, mode) {
 }
 
 
-function getMove(cell_selected, game) {
-    var maxRows = game.height;
-    var maxCols = game.width;
+function startTurn(cell_selected, game) {
+    var maxRows = game.board.height();
+    var maxCols = game.board.width();
     var selectedColumn = parseInt(cell_selected.substring(1), 10) % maxCols;
     var cellId = getEmptyCell(selectedColumn, maxRows, maxCols);
 
-    if (cellId == -1 || game.toot_allows_move(selectedColumn) === false){
+    if (cellId == -1 || game.board.allows_move(selectedColumn) === false){
         return;
     }
 
@@ -108,36 +88,49 @@ function getMove(cell_selected, game) {
 }
 
 function endGame(game) {
-    if (!game.toot_is_terminal) {
+    if (!game.board.is_terminal()) {
         return false;
     }
 
-    let result = game.toot_has_winner();
+    let result = game.board.has_winner();
     if (result === 'w') {
         //there is a winner, we should get winner
-        let winner = game.toot_get_winner();
+        let winner = game.board.get_winner();
         if (winner === 'T') {
+            game.winner = 1;
             alert("TOOT HAS WON!");
         } else {
+            game.winner = 0;
             alert("OTTO HAS WON!");
         }
+    }else if (result === 'd') {
+        game.winner = 2;
+        alert("DRAW!");
+    }else if (result === 't') {
+        game.winner = 3;
+        alert("TIE!");
     }
-
 
     return true;
 }
 
 function getAIMove(game) {
-    var maxRows = game.height;
-    var maxCols = game.width;
-    var selectedColumn = game.bestMove();
+    var maxRows = game.board.height();
+    var maxCols = game.board.width();
+    var ai_token = game.turn;
+    var selectedColumnandtoken= game.ai.best_move(game.board, ai_token);
+    var selectedColumn = parseInt(selectedColumnandtoken.substring(0,1), 10);
+    var token = selectedColumnandtoken.substring(1,2);
     var cellId = getEmptyCell(selectedColumn, maxRows, maxCols);
+
+    console.log("AI move: " + cellId);
+    console.log("AI token: " + token);
 
     if (cellId == -1) {
         return;
     }
     
-    performMove(cellId, game);
+    performMoveAI(cellId,token, game);
     
     var bool = endGame(game);
 }
@@ -165,20 +158,37 @@ function performMove(cellId, game) {
         }
     }
         
-    let row = Math.floor(parseInt(cellId.substring(1), 10) / game.width);
     let col = parseInt(cellId.substring(1), 10) % game.width;
 
     if (piece == 'T') {
         cell.classList.add('toot-token');
         cell.value = piece;
-
-        game.toot_perform_move(col, 'T', game.turn);
     } else {
         cell.classList.add('otto-token');
         cell.value = piece;
-        game.toot_perform_move(col, 'O', game.turn);
     }
 
-    game.turn = game.turn == 'T' ? 'O' : 'T';
-    game.updateBoard(row, col, piece);
+    game.board.perform_move(col, piece, game.turn);
+    game.nextTurn();
+}
+
+
+function performMoveAI(cellId, ai_token, game) {
+    //funciton to hanlde AI move
+    let cell = document.getElementById(cellId);
+    cell.classList.remove('empty-cell');
+    var piece = ai_token;
+        
+    let col = parseInt(cellId.substring(1), 10) % game.width;
+
+    if (piece == 'T') {
+        cell.classList.add('toot-token');
+        cell.value = piece;
+    } else {
+        cell.classList.add('otto-token');
+        cell.value = piece;
+    }
+
+    game.board.perform_move(col, piece, game.turn);
+    game.nextTurn();
 }
