@@ -3,7 +3,7 @@ use std::cmp;
 use crate::board::Difficulty;
 use crate::otto::TootOttoBoard;
 use wasm_bindgen::prelude::*;
-
+use web_sys::console;
 #[wasm_bindgen]
 pub struct OttoBot {
     depth: u32,
@@ -28,6 +28,9 @@ impl OttoBot {
 
     #[wasm_bindgen]
     pub fn best_move(&self, board: &mut TootOttoBoard, player: char) -> String{
+        let log = "OttoBot bestmove player: {} called".replace("{}", &player.to_string());
+        console::log_1(&log.into());
+        console::log_1(&"depth {}".replace("{}",&self.depth.to_string()).into());
         let (score, mov, mov_char) = self.minimax(board, self.depth, i32::MIN, i32::MAX, player);
         println!("Move: {} {}, Score: {}", mov, mov_char, score);
         let mov_str = mov.to_string() + mov_char.to_string().as_str();
@@ -202,11 +205,13 @@ impl OttoBot {
         }
 
         for i in (0..board.width() as u32) {
+
+            console::log_1(&"AI Trying for a move".into());
             if board.allows_move(i) {
 
                 let tokens = ['O', 'T'];
                 for &token in tokens.iter() {
-                    board.perform_move(i, token, player );
+                    board.perform_move_plz(i, token, player );
                     let (score, _, _) = self.minimax(board, depth - 1,alpha, beta, if player == 'T' { 'O' } else { 'T' });
                     board.undo_move(i as usize);
                 

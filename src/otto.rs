@@ -3,6 +3,7 @@ use super::board::*;
 use std::io::{self, Write};
 use crate::ottobot;
 use wasm_bindgen::prelude::*;
+use web_sys::console;
 
 ///Player interacts directly with the board
 ///and the board interacts with the bot where the bot will
@@ -72,9 +73,11 @@ impl TootOttoBoard {
         self.winner
     }
 
-    #[wasm_bindgen]
+    
     ///Takes a column and a token and places the token on that column
-    pub fn perform_move(&mut self, col: u32, tok: char, player: char) {
+    #[wasm_bindgen]
+    pub fn perform_move_plz(&mut self, col: u32, tok: char, player: char) {
+        console::log_1(&"performing move".into());
         // decrement from the bottom row to the top row
         for row in (0..self.height).rev(){
             if self.board[row as usize][col as usize as usize] == ' ' {
@@ -325,7 +328,7 @@ impl TootOttoBoard {
             }
 
             let (player_move_col, player_move_token) = self.get_player_move();
-            self.perform_move(player_move_col as u32, player_move_token, turn);
+            self.perform_move_plz(player_move_col as u32, player_move_token, turn);
             moves.push_str(&player_move_col.to_string());
 
             //check if the game is over
@@ -391,11 +394,11 @@ impl TootOttoBoard {
                 let ai_move: Vec<char> = ai_move_string.chars().collect();
                 let ai_move_char = ai_move[1];
                 let ai_move = ai_move[0].to_digit(10).unwrap();
-                self.perform_move(ai_move as u32, ai_move_char, ai_tok);
+                self.perform_move_plz(ai_move as u32, ai_move_char, ai_tok);
                 moves.push_str(&ai_move.to_string());
             } else {
                 let (player_move_col, player_move_token) = self.get_player_move();
-                self.perform_move(player_move_col as u32, player_move_token, turn);
+                self.perform_move_plz(player_move_col as u32, player_move_token, turn);
                 moves.push_str(&player_move_col.to_string());
             }
 
