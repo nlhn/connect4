@@ -1,11 +1,11 @@
 import { BoardSize, Difficulty, Connect4Board, Connect4AI } from "connect4";
 
 class GameData {
-    constructor(size, mode, game) {
+    constructor(size, mode) {
         this.size = size == 0 ? BoardSize.Standard : BoardSize.Large;
         this.mode = this.get_mode(mode);
         this.turn = 'X';
-        this.winner = null;
+        this.winner = null; // 0: player 1, 1: player 2, 2: draw
         this.backendBoard = new Connect4Board(this.size);
         this.ai = this.mode !== null ? new Connect4AI(this.mode) : null;
     }
