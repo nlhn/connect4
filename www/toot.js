@@ -2,7 +2,6 @@ import { BoardSize,Difficulty,TootOttoBoard,OttoBot } from "connect4";
 
 class GameBoard {
     constructor(size, mode, playerTok) {
-        console.log("GameBoard constructor called " + size + " " + mode + " " + playerTok);
         this.size = size == 0 ? BoardSize.Standard : BoardSize.Large;
         this.board = new TootOttoBoard(this.size);
         this.mode = mode; // 0 for player vs player, 1 for easy AI, 2 for hard AI
@@ -71,8 +70,6 @@ export function drawBoardToot(size, mode, playerTok) {
 
 
 function startTurn(cell_selected, game) {
-    console.log("Player Turn");
-    console.log(game.turn)
     var maxRows = game.board.height();
     var maxCols = game.board.width();
     var selectedColumn = parseInt(cell_selected.substring(1), 10) % maxCols;

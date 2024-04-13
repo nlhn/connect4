@@ -77,7 +77,7 @@ impl TootOttoBoard {
     ///Takes a column and a token and places the token on that column
     #[wasm_bindgen]
     pub fn perform_move_plz(&mut self, col: u32, tok: char, player: char) {
-        console::log_1(&"performing move".into());
+        println!("Player: {}, Token: {}, Column: {}", player, tok, col);
         // decrement from the bottom row to the top row
         for row in (0..self.height).rev(){
             if self.board[row as usize][col as usize as usize] == ' ' {

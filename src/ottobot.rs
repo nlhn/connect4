@@ -211,7 +211,7 @@ impl OttoBot {
 
                 let tokens = ['O', 'T'];
                 for &token in tokens.iter() {
-                    board.perform_move_plz(i, token, player );
+                    board.perform_move_plz(i, token, player);
                     let (score, _, _) = self.minimax(board, depth - 1,alpha, beta, if player == 'T' { 'O' } else { 'T' });
                     board.undo_move(i as usize);
                 
