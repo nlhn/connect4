@@ -137,30 +137,12 @@ function performMove(cellId, game) {
     console.log("cellId: ", cellId);
     cell.classList.remove('empty-cell');
     var piece;
-    if (game.game == "connect4") {
-        if (game.turn == 'X') {
-            cell.classList.add('yellow-filled') 
-            piece = 'X';
-        } else {
-            cell.classList.add('red-filled');
-            piece = 'O';
-        }
-
+    if (game.turn == 'X') {
+        cell.classList.add('yellow-filled') 
+        piece = 'X';
     } else {
-        var tokens = document.getElementsByName('token');
-        for (var i = 0; i < tokens.length; i++) {
-            if (tokens[i].checked) {
-                piece = tokens[i].value;
-                break;
-            }
-        }
-        if (piece == 'T') {
-            cell.classList.add('toot-token');
-            cell.value = piece;
-        } else {
-            cell.classList.add('otto-token');
-            cell.value = piece;
-        }
+        cell.classList.add('red-filled');
+        piece = 'O';
     }
     let col = parseInt(cellId.substring(1), 10) % game.backendBoard.width();
     game.backendBoard.perform_move(col, piece);
