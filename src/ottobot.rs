@@ -28,11 +28,7 @@ impl OttoBot {
 
     #[wasm_bindgen]
     pub fn best_move(&self, board: &mut TootOttoBoard, player: char) -> String{
-        let log = "OttoBot bestmove player: {} called".replace("{}", &player.to_string());
-        //console::log_1(&log.into());
-        //console::log_1(&"depth {}".replace("{}",&self.depth.to_string()).into());
-        let (score, mov, mov_char) = self.minimax(board, self.depth, i32::MIN, i32::MAX, player);
-        println!("Move: {} {}, Score: {}", mov, mov_char, score);
+        let (_, mov, mov_char) = self.minimax(board, self.depth, i32::MIN, i32::MAX, player);
         let mov_str = mov.to_string() + mov_char.to_string().as_str();
         mov_str
     }

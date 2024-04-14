@@ -92,7 +92,6 @@ impl TootOttoBoard {
 
     #[wasm_bindgen]
     pub fn is_terminal(&mut self) -> bool {
-        console::log_1(&"is_terminal".into());
         if (self.has_winner() !='f') || self.is_draw() {
             return true;
         }
