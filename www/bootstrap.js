@@ -5,6 +5,8 @@
 import("./connect4.js")
   .then((module) => {
     window.drawBoard = module.drawBoard;
+    window.onLoad = module.onLoad;
+    window.newGame = module.newGame;
   })
   .catch(e => console.error("Error importing `connect4.js`:", e));
 

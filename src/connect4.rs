@@ -1,11 +1,14 @@
-use std::cmp;
+use std::{backtrace, cmp};
 use rand::seq::SliceRandom;
+use serde::{Serialize, Deserialize};
 use std::io::{self, Write};
 use std::fmt;
 use super::board::*;
 use wasm_bindgen::prelude::*;
+use serde_json;
 
 #[wasm_bindgen]
+#[derive(Serialize, Deserialize)]
 pub struct Connect4Board {
     width: u32,
     height: u32,
@@ -82,6 +85,19 @@ impl Connect4Board {
     #[wasm_bindgen]
     pub fn is_draw(&self) -> bool {
         self.available_moves().is_empty()
+    }
+
+    #[wasm_bindgen]
+    pub fn serialize(&self) -> String {
+        return serde_json::to_string(&self).unwrap();
+    }
+
+    #[wasm_bindgen]
+    pub fn get_colour(&self, r: usize, c: usize) -> char {
+        if r as u32 >= self.height || c as u32 >= self.width {
+            return '_';
+        }
+        return self.board[r][c];
     }
 }
 
@@ -411,5 +427,16 @@ impl Connect4AI {
         }
         
         (best_score, best_move.clone())
+    }
+}
+
+#[wasm_bindgen]
+pub fn deserialize_connect4(str: &str) -> Connect4Board {
+    match serde_json::from_str(str) {
+        Ok(b) => return b,
+        Err(_) => {
+            println!("couldnt deserialize board");
+            return Connect4Board::new(BoardSize::Standard);
+        }
     }
 }

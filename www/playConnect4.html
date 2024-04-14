@@ -38,8 +38,9 @@
       <input type="radio" id="vsComputer2" name="gameMode" value="2">
       <label for="vsComputer2">Vs Computer (Hard)</label><br>
     </form>
-    <button id="Connect4Button">Play!</button>
+    <button id="Connect4Button">New Game</button>
     <div id="connect4GameBoard" class="gameBoard"></div>
+    <div id="winnerDisplay"></div>
     <script>
         document.getElementById('Connect4Button').addEventListener('click', function() {
             var boardSizeElements = document.getElementsByName('boardSize');
@@ -61,10 +62,15 @@
                 }
             }
             if (selectedSize != -1 && selectedMode != -1) {
+                newGame(selectedSize, selectedMode);
                 drawBoard(selectedSize, selectedMode, "connect4");
             }
 
         });
+
+        window.onload = function() {
+          onLoad();
+        };
     </script>
   </body>
 </html>
