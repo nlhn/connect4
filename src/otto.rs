@@ -4,6 +4,7 @@ use std::io::{self, Write};
 use crate::ottobot;
 use wasm_bindgen::prelude::*;
 use web_sys::console;
+use serde::{Serialize, Deserialize};
 
 ///Player interacts directly with the board
 ///and the board interacts with the bot where the bot will
@@ -12,6 +13,7 @@ use web_sys::console;
 /// The board will keep track of the game state and the bot 
 
 #[wasm_bindgen]
+#[derive(Serialize, Deserialize)]
 pub struct TootOttoBoard {
     board: Vec<Vec<char>>,
 
@@ -207,6 +209,19 @@ impl TootOttoBoard {
     #[wasm_bindgen]
     pub fn allows_move(&self, col: u32) -> bool{
         col < self.width() as u32 && self.board[0][col as usize] == ' '
+    }
+
+    #[wasm_bindgen]
+    pub fn serialize(&self) -> String {
+        return serde_json::to_string(&self).unwrap();
+    }
+
+    #[wasm_bindgen]
+    pub fn get_colour(&self, r: usize, c: usize) -> char {
+        if r as u32 >= self.height || c as u32 >= self.width {
+            return '_';
+        }
+        return self.board[r][c];
     }
 }
 
@@ -442,5 +457,16 @@ impl fmt::Display for TootOttoBoard {
         }
         writeln!(f)?;
         Ok(())
+    }
+}
+
+#[wasm_bindgen]
+pub fn deserialize_otto(str: &str) -> TootOttoBoard {
+    match serde_json::from_str(str) {
+        Ok(b) => return b,
+        Err(_) => {
+            println!("couldnt deserialize board");
+            return TootOttoBoard::new(BoardSize::Standard);
+        }
     }
 }

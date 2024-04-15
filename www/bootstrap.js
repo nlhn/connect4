@@ -14,6 +14,16 @@ import("./connect4.js")
 import("./toot.js")
   .then((module) => {
     window.drawBoardToot = module.drawBoardToot;
+    window.onLoadToot = module.onLoadToot;
+    window.newGameToot = module.newGameToot;
   })
   .catch(e => console.error("Error importing `toot.js`:", e));
+
+import("./theme.js")
+  .then((module) => {
+    window.setTheme = module.setTheme;
+    window.handleTheme = module.handleTheme;
+    window.setFormFields = module.setFormFields;
+  })
+  .catch(e => console.error("Error importing `theme.js`:", e));
 

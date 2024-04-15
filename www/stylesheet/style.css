@@ -1,6 +1,6 @@
 body {
-    background-color: #f2f2f2; 
-    color: #333; 
+    background-color: var(--bg-color); 
+    color: var(--on-bg-color);
     font-family: Arial, sans-serif;
     text-align: center; 
     margin: 0; 
@@ -8,7 +8,7 @@ body {
 
 /* Navigation bar styling */
 #navbar {
-    background-color: #333; 
+    background-color: var(--surface1-color); 
     padding: 10px 0; 
     margin-bottom: 20px; 
 }
@@ -27,16 +27,15 @@ body {
 
 #navbar ul li a {
     padding: 10px 15px;
-    color: white; 
+    color: var(--on-surface1-color); 
     text-decoration: none;
     display: inline-block;
 }
 
 #navbar ul li a:hover, #navbar ul li a:active {
-    background-color: #ddd; 
-    color: black; 
+    background-color: var(--hover-surface1-color); 
+    color: var(--on-surface1-color); 
 }
-
 
 h1 {
     font-size: 28px; 
@@ -60,8 +59,8 @@ form label, form input[type="radio"] {
 
 /* Button styling */
 button {
-    background-color: #333;
-    color: white; 
+    background-color: var(--surface1-color);
+    color: var(--on-surface1-color); 
     border: none;
     padding: 10px 20px;
     text-align: center;
@@ -81,7 +80,7 @@ button {
 }
 
 button:hover {
-    background-color: #555;
+    background-color: var(--hover-surface1-color);
 }
 
 /* Center the game board and ensure it fits the screen */
@@ -96,7 +95,7 @@ button:hover {
     margin: 0 auto; 
     border-collapse: separate;
     border-spacing: 10px;
-    background-color: #333; 
+    background-color: var(--surface1-color); 
     max-width: 90%; 
 }
 
@@ -113,26 +112,33 @@ button:hover {
 }
 
 .empty-cell {
-    background-color: white;
+    background-color: var(--bg-color);
 }
 .red-filled {
-    background-color: red;
+    font-size: 30px; 
+    line-height: 60px;
+    text-align: center; 
+    display: block;
 }
+
 .yellow-filled {
-    background-color: yellow;
+    font-size: 30px; 
+    line-height: 60px;
+    text-align: center; 
+    display: block;
 }
 
 .toot-token{
-    background-color: lightgreen;
+    background-color: var(--tPlayer1-color);
     font-size: 30px; 
     line-height: 60px;
     text-align: center; 
     color: black;
     display: block; 
 }
-  
+ 
 .otto-token{
-    background-color: lightblue;
+    background-color: var(--tPlayer2-color);
     font-size: 30px; 
     line-height: 60px;
     text-align: center; 
@@ -145,21 +151,95 @@ button:hover {
     margin: 0 auto; 
     padding: 20px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); 
-    background-color: white; 
+    background-color: var(--surface2-color); 
+    color: var(--on-surface2-color); 
     border-radius: 5px; 
 }
 .content h1, h3 {
-    color: #333;
+    color: var(--on-surface2-color);
     text-align: left; 
 }
 
 p {
     text-align: left; 
     line-height: 1.6; 
-    color: #555; 
+    color: var(--on-bg-color); 
 }
 
 #tokens {
     margin: 5px auto; 
 }
-  
+
+.token-red {
+    color: #8d0000;
+    background-color: #ff0000;
+}
+
+.token-yellow {
+    color: #6d6600;
+    background-color: #ffee00;
+}
+
+.token-green {
+    background-color: #3cff00;
+    color: #1b7400;
+}
+
+.token-blue {
+    background-color: #001aff;
+    color: #000c75;
+}
+
+.token-pink {
+    background-color: #ea00ff;
+    color: #57005f;
+}
+
+:root {
+    --cPlayer1-color: #002fff;
+    --on-cPlayer1-color: #690000;
+    --cPlayer2-color: #ffee00;
+    --on-cPlayer2-color: #6d6600;
+    --tPlayer1-color: #3cff00;
+    --on-tPlayer1-color: #1b7400;
+    --tPlayer2-color: #ea00ff;
+    --on-tPlayer2-color: #57005f;
+}
+
+:root
+    :root.placeholder {
+    --bg-color: #181818;
+    --on-bg-color: #d1d1d1;
+    --surface1-color: #707070;
+    --on-surface1-color: #000000;
+    --hover-surface1-color: #9b9b9b;
+    --surface2-color: #353535;
+    --on-surface2-color: rgb(207, 207, 207);
+    }
+    :root.light {
+    --bg-color: #fcfcfc;
+    --on-bg-color: #000000;
+    --surface1-color: #2b2b2b;
+    --on-surface1-color: #dadada;
+    --hover-surface1-color: #5f5f5f;
+    --surface2-color: #ffffff;
+    --on-surface2-color: #1a1a1a;
+    }
+    :root.dark {
+    --bg-color: #181818;
+    --on-bg-color: #d1d1d1;
+    --surface1-color: #707070;
+    --on-surface1-color: #000000;
+    --hover-surface1-color: #9b9b9b;
+    --surface2-color: #353535;
+    --on-surface2-color: rgb(207, 207, 207);
+    }
+    :root.classic {
+    --bg-color: #f2f2f2;
+    --on-bg-color: #333;
+    --surface1-color: #2953df;
+    --on-surface1-color: #ffffff;
+    --hover-surface1-color: #b0d0ff;
+    --surface2-color: #fcfcfc;
+    --on-surface2-color: rgb(36, 36, 36);
+    }

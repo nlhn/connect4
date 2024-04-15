@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Rules</title>
+    <link rel="stylesheet" href="stylesheet/style.css">
+  </head>
+  <body>
+    <div id="navbar">
+      <ul>
+        <li>
+          <a href="playConnect4.html">Connect4</a>
+        </li>
+        <li>
+          <a href="playTootOtto.html">OTTO/TOOT</a>
+        </li>
+        <li>
+          <a href="howToPlay.html">How to Play</a>
+        </li>
+        <li>
+            <a>Settings</a>
+        </li>
+      </ul>
+    </div>
+    <div class="content">
+      <h1>Settings</h1>
+      <noscript>This page contains webassembly and javascript content,
+      please enable javascript in your browser.</noscript>
+      <script src="./bootstrap.js"></script>
+
+      <form>
+        <label for="colourTheme">Website Theme:</label><br>
+        <input type="radio" id="colourTheme_light" name="colourTheme" value="light">
+        <label for="colourTheme_light">Light</label><br>
+        <input type="radio" id="colourTheme_dark" name="colourTheme" value="dark">
+        <label for="colourTheme_dark">Dark</label><br>
+        <input type="radio" id="colourTheme_classic" name="colourTheme" value="classic">
+        <label for="colourTheme_classic">Classic</label><br>
+        <br>
+        <label for="cTheme1">Connect 4 Player 1:</label><br>
+        <select name="cTheme1" id="cTheme1Select">
+            <option value="red">Red</option>
+            <option value="yellow">Yellow</option>
+            <option value="green">Green</option>
+            <option value="blue">Blue</option>
+            <option value="pink">Pink</option>
+        </select>          
+        <br>
+        <label for="cTheme2">Connect 4 Player 2:</label><br>
+        <select name="cTheme2" id="cTheme2Select">
+            <option value="red">Red</option>
+            <option value="yellow">Yellow</option>
+            <option value="green">Green</option>
+            <option value="blue">Blue</option>
+            <option value="pink">Pink</option>
+        </select> 
+        <label for="tTheme1">TOOT Tokens:</label><br>
+        <select name="tTheme1" id="tTheme1Select">
+            <option value="red">Red</option>
+            <option value="yellow">Yellow</option>
+            <option value="green">Green</option>
+            <option value="blue">Blue</option>
+            <option value="pink">Pink</option>
+        </select>          
+        <br>
+        <label for="tTheme2">OTTO Tokens:</label><br>
+        <select name="tTheme2" id="tTheme2Select">
+            <option value="red">Red</option>
+            <option value="yellow">Yellow</option>
+            <option value="green">Green</option>
+            <option value="blue">Blue</option>
+            <option value="pink">Pink</option>
+        </select> 
+        <br>
+        <label for="accessibility">Accessibility Toggles:</label><br>
+        <input type="checkbox" id="accessibility_letters" name="accessibility">
+        <label for="accessibility_letters">Include letter identifiers</label><br>
+
+        <button id="settingsButton">Update Settings</button>
+    </form>
+
+    </div>  
+
+    <script>
+        document.getElementById('settingsButton').addEventListener('click', function() {
+          
+          var colourThemeElements = document.getElementsByName('colourTheme');
+          var colour = "light";
+          for (var i = 0; i < colourThemeElements.length; i++) {
+              if (colourThemeElements[i].checked) {
+                  colour = colourThemeElements[i].value;
+                  break;
+              }
+          }
+
+          var cTheme1Select = document.getElementById("cTheme1Select");
+          var cTheme2Select = document.getElementById("cTheme2Select");
+          var tTheme1Select = document.getElementById("tTheme1Select");
+          var tTheme2Select = document.getElementById("tTheme2Select");
+
+          var letters = document.getElementById("accessibility_letters").checked;
+
+          setTheme(colour, cTheme1Select.value, cTheme2Select.value, tTheme1Select.value, tTheme2Select.value, letters);
+          handleTheme();
+        });
+
+        window.onload = function() {
+            setFormFields();
+          handleTheme();
+        };
+    </script>
+  </body>
+</html>

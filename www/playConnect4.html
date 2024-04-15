@@ -17,6 +17,9 @@
         <li>
           <a href="howToPlay.html">How to Play</a>
         </li>
+        <li>
+          <a href="settings.html">Settings</a>
+        </li>
       </ul>
     </div>
     <h1>Connect 4</h1>
@@ -64,12 +67,14 @@
             if (selectedSize != -1 && selectedMode != -1) {
                 newGame(selectedSize, selectedMode);
                 drawBoard(selectedSize, selectedMode, "connect4");
+                handleTheme();
             }
 
         });
 
         window.onload = function() {
           onLoad();
+          handleTheme();
         };
     </script>
   </body>

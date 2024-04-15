@@ -1,14 +1,24 @@
-import { BoardSize,Difficulty,TootOttoBoard,OttoBot } from "connect4";
+import { BoardSize,Difficulty,TootOttoBoard,OttoBot,deserialize_otto } from "connect4";
 
 class GameBoard {
-    constructor(size, mode, playerTok) {
-        this.size = size == 0 ? BoardSize.Standard : BoardSize.Large;
-        this.board = new TootOttoBoard(this.size);
-        this.mode = mode; // 0 for player vs player, 1 for easy AI, 2 for hard AI
-        this.winner = null; // 0 for O win, 1 for T win, 2 for draw, 3 for tie
-        this.turn = 'T'; // T for Toot, O for Otto
-        this.playerTok = playerTok;
-        this.ai = this.mode !== null ? new OttoBot(this.get_mode(this.mode), this.playerTok == 'T' ? 'O' : 'T') : null;
+    constructor(size, mode, playerTok, savedGame) {
+        if (savedGame != undefined) {
+            this.size = savedGame.size;
+            this.mode = savedGame.mode;
+            this.turn = savedGame.turn;
+            this.winner = savedGame.winner; // 0: player 1, 1: player 2, 2: draw
+            this.playerTok = savedGame.playerTok;
+            this.ai = this.mode !== null ? new OttoBot(this.get_mode(this.mode), this.playerTok == 'T' ? 'O' : 'T') : null;
+        }
+        else {
+            this.size = size == 0 ? BoardSize.Standard : BoardSize.Large;
+            this.board = new TootOttoBoard(this.size);
+            this.mode = mode; // 0 for player vs player, 1 for easy AI, 2 for hard AI
+            this.winner = null; // 0 for O win, 1 for T win, 2 for draw, 3 for tie
+            this.turn = 'T'; // T for Toot, O for Otto
+            this.playerTok = playerTok;
+            this.ai = this.mode !== null ? new OttoBot(this.get_mode(this.mode), this.playerTok == 'T' ? 'O' : 'T') : null;
+        }
     }
 
     get_mode(mode) {
@@ -31,9 +41,27 @@ class GameBoard {
 
 }
 
-export function drawBoardToot(size, mode, playerTok) {
-    var rows, cols, gameBoard
+export function newGameToot(size, mode, playerTok) {
+    console.log("creating new game")
     var game = new GameBoard(size, mode, playerTok);
+    saveGame(game);
+
+    // initialize message
+    let winnerDisplay = document.getElementById("winnerDisplay");
+    winnerDisplay.innerHTML = "Game in progress...";
+};
+
+
+export function drawBoardToot(size, mode, playerTok) {
+    var rows, cols, gameBoard, game;
+
+    game = loadGame();
+    if (game == null) {
+        // couldnt load, create new
+        newGameToot(size, mode, playerTok);
+        game = loadGame();        
+    }
+    
     gameBoard = document.getElementById('TootOttoGameBoard');
     rows = game.size == BoardSize.Standard ? 4 : 6;
     cols = game.size == BoardSize.Standard ? 6 : 9;
@@ -60,6 +88,15 @@ export function drawBoardToot(size, mode, playerTok) {
                     startTurn(this.id, game);
                 }
             };
+
+            // colour input
+            var colour = game.board.get_colour(i, j);
+            if (colour == 'T') {
+                input.classList.add('toot-token');
+            } else if (colour == 'O') {
+                input.classList.add('otto-token');
+            }
+
             cell.appendChild(input);
             row.appendChild(cell);
         }
@@ -83,36 +120,44 @@ function startTurn(cell_selected, game) {
     performMove(cellId, game);
     
     // AI move
-    if (!endGame(game) && game.mode != 0) {
+    if (!endGame(game, false) && game.mode != 0) {
         getAIMove(game);
+        endGame(game, true);
     }
 }
 
-function endGame(game) {
-
+function endGame(game, doAlert) {
+    var msg;
+    let winnerDisplay = document.getElementById("winnerDisplay");
     let result = game.board.has_winner();
+
+    if (!game.board.is_terminal()) {
+        winnerDisplay.innerHTML = "Game in progress...";
+        return false;
+    }
+
     if (result === 'w') {
         //there is a winner, we should get winner
         let winner = game.board.get_winner();
         if (winner === 'T') {
             game.winner = 1;
-            alert("TOOT HAS WON!");
+            msg = "TOOT has won!"
         } else {
             game.winner = 0;
-            alert("OTTO HAS WON!");
+            msg = "OTTO has won!"
         }
     }else if (result === 'd') {
         game.winner = 2;
-        alert("DRAW!");
+        msg = "It's a draw!"
     }else if (result === 't') {
         game.winner = 3;
-        alert("TIE!");
+        msg = "It's a tie!"
     }
 
-    if (!game.board.is_terminal()) {
-        return false;
+    winnerDisplay.innerHTML = msg
+    if (doAlert == true) {
+        alert(msg);
     }
-
     return true;
 }
 
@@ -131,8 +176,6 @@ function getAIMove(game) {
     }
     
     performMoveAI(cellId,token, game);
-    
-    var bool = endGame(game);
 }
 
 function getEmptyCell(selectedColumn, maxRows, maxCols) {
@@ -170,10 +213,10 @@ function performMove(cellId, game) {
 
     var turn = game.turn == 'T' ? 'T' : 'O';
     game.board.perform_move_plz(col, piece, turn);
-    var bool = endGame(game);
     game.nextTurn();
-}
 
+    saveGame(game);
+}
 
 function performMoveAI(cellId, ai_token, game) {
     //funciton to hanlde AI move
@@ -185,14 +228,69 @@ function performMoveAI(cellId, ai_token, game) {
 
     if (piece == 'T') {
         cell.classList.add('toot-token');
-        cell.value = piece;
+        // cell.value = piece;
     } else {
         cell.classList.add('otto-token');
-        cell.value = piece;
+        // cell.value = piece;
     }
 
     var turn = game.turn == 'O' ? 'O' : 'T';
     console.log("AI Turn " + turn)
     game.board.perform_move_plz(col, piece, turn);
     game.nextTurn();
+
+    saveGame(game);
 }
+
+
+function saveGame(game) {
+    console.log("saveGame called");
+    console.log(game);
+    
+    // serialize this thing
+    var sg = JSON.stringify(game);
+    console.log(sg);
+    localStorage.setItem("otto", sg);
+
+    // serialize gameBoard
+    var sb = game.board.serialize();
+    console.log(sb);
+    localStorage.setItem("ottoboard", sb);
+}
+
+function loadGame() {
+    console.log("loadGame called");
+    var game, board, reconst;
+    var storedGameJSON = localStorage.getItem("otto");
+    var storedBoardJSON = localStorage.getItem("ottoboard");
+
+    if (storedGameJSON == null || storedBoardJSON == null) {
+        console.log("no stored game");
+        return null;
+    }
+
+    console.log("stored game: " + storedGameJSON);
+    game = JSON.parse(storedGameJSON);
+
+    console.log("stored board: " + storedBoardJSON);
+    board = deserialize_otto(storedBoardJSON);
+
+    reconst = new GameBoard(null, null, null, game);
+    reconst.board = board;
+    console.log(reconst);
+
+    return reconst;
+}
+
+export function onLoadToot() {
+    console.log("onLoadToot");
+    var storedGameJSON = localStorage.getItem("otto");
+    var storedBoardJSON = localStorage.getItem("ottoboard");
+
+    if (storedGameJSON == null || storedBoardJSON == null) {
+        console.log("no stored game on load");
+    }
+    else {
+        drawBoardToot();
+    }
+};

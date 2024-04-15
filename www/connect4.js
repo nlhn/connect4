@@ -1,14 +1,15 @@
 import { BoardSize, Difficulty, Connect4Board, Connect4AI, deserialize_connect4 } from "connect4";
+import { handleTheme } from "./theme";
 
 class GameData {
     constructor(size, mode, savedGame) {
         if (savedGame != undefined) {
             this.size = savedGame.size;
-            this.mode = this.get_mode(mode);
+            this.mode = savedGame.mode;
             this.turn = savedGame.turn;
             this.winner = savedGame.winner; // 0: player 1, 1: player 2, 2: draw
             this.backendBoard = null;
-            this.ai = new Connect4AI(this.mode);
+            this.ai = this.mode !== null ? new Connect4AI(this.mode) : null;
         }
         else {
             this.size = size == 0 ? BoardSize.Standard : BoardSize.Large;
@@ -107,7 +108,6 @@ export function drawBoard(size, mode) {
         table.appendChild(row);
     }
     gameBoard.appendChild(table);
-
     endGame(game, false);
 }
 
@@ -198,6 +198,7 @@ function performMove(cellId, game) {
     game.nextTurn();
 
     saveGame(game);
+    handleTheme(); // token changed
 }
 
 function saveGame(game) {

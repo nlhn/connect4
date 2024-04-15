@@ -17,6 +17,9 @@
         <li>
           <a href="howToPlay.html">How to Play</a>
         </li>
+        <li>
+          <a href="settings.html">Settings</a>
+        </li>
       </ul>
     </div>
     <h1>Toot and Otto</h1>
@@ -52,6 +55,7 @@
         <label for="tokenO">O</label>
     </div>
     <div id="TootOttoGameBoard" class="gameBoard"></div>
+    <div id="winnerDisplay"></div>
     <script>
       document.getElementById('TootOttoButton').addEventListener('click', function() {
           var boardSizeElements = document.getElementsByName('TboardSize');
@@ -86,9 +90,15 @@
               document.getElementById('tokens').style.display = "flex";
               document.getElementById('tokens').style.justifyContent = "center";
               document.getElementById('tokens').style.alignItems = 'center';
+              newGameToot(selectedSize, selectedMode, selectedPlayer);
               drawBoardToot(selectedSize, selectedMode, selectedPlayer);
           }
-      });
+        });
+
+        window.onload = function() {
+           onLoadToot();
+           handleTheme();
+        };
   </script>
   </body>
 </html>
