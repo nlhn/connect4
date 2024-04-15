@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Toot and Otto</title>
+    <title>TOOT/OTTO</title>
     <link rel="stylesheet" href="stylesheet/style.css">
   </head>
   <body>
@@ -12,7 +12,7 @@
           <a href="playConnect4.html">Connect4</a>
         </li>
         <li>
-          <a>OTTO/TOOT</a>
+          <a>TOOT/OTTO</a>
         </li>
         <li>
           <a href="howToPlay.html">How to Play</a>
@@ -26,28 +26,31 @@
     <noscript>This page contains webassembly and javascript content,
     please enable javascript in your browser.</noscript>
     <script src="./bootstrap.js"></script>
+    <br>
     <form>
-      <label for="TboardSize">Choose a board size:</label><br>
-      <input type="radio" id="standard" name="TboardSize" value="0" required>
+      <b><label for="TboardSize">Choose a board size:</label></b><br>
+      <input type="radio" id="board_0" name="TboardSize" value="0" required>
       <label for="standard">Standard</label><br>
-      <input type="radio" id="large" name="TboardSize" value="1">
+      <input type="radio" id="board_1" name="TboardSize" value="1">
       <label for="large">Large</label><br>
-
-      <label for="TgameMode">Choose a game mode:</label><br>
-      <input type="radio" id="vsHuman" name="TgameMode" value="0" required>
-      <label for="vsHuman">Vs Human</label><br>
-      <input type="radio" id="vsComputer1" name="TgameMode" value="1">
-      <label for="vsComputer1">Vs Computer (Easy)</label><br>
-      <input type="radio" id="vsComputer2" name="TgameMode" value="2">
-      <label for="vsComputer2">Vs Computer (Hard)</label><br>
-
-      <label for="TplayAs">Player (player 1 if pvp) will play as:</label><br>
-      <input type="radio" id="Toot" name="Tplayer" value="T" required>
-      <label for="vsComputer1">Toot</label><br>
-      <input type="radio" id="Otto" name="Tplayer" value="O">
-      <label for="vsComputer2">Otto</label><br>
+      <br>
+      <b><label for="TgameMode">Choose a game mode:</label></b><br>
+      <input type="radio" id="gamemode_0" name="TgameMode" value="0" required>
+      <label for="vsHuman">VS Human</label><br>
+      <input type="radio" id="gamemode_1" name="TgameMode" value="1">
+      <label for="vsComputer1">VS Computer (Easy)</label><br>
+      <input type="radio" id="gamemode_2" name="TgameMode" value="2">
+      <label for="vsComputer2">VS Computer (Hard)</label><br>
+    
+      <br>
+      <b><label for="TplayAs">Player (Player 1 if PVP) will play as:</label></b><br>
+      <input type="radio" id="player_T" name="Tplayer" value="T" required>
+      <label for="vsComputer1">TOOT</label><br>
+      <input type="radio" id="player_O" name="Tplayer" value="O">
+      <label for="vsComputer2">OTTO</label><br>
     </form>
-    <button id="TootOttoButton">Play!</button>
+    <br>
+    <button id="TootOttoButton">New Game</button>
     <div id="tokens" style="display: none;">
         <input type="radio" id="tokenT" name="token" value="T" checked>
         <label for="tokenT">T</label>
@@ -56,7 +59,7 @@
     </div>
     <div id="TootOttoGameBoard" class="gameBoard"></div>
     <div id="winnerDisplay"></div>
-    <script>
+    <script>    
       document.getElementById('TootOttoButton').addEventListener('click', function() {
           var boardSizeElements = document.getElementsByName('TboardSize');
           var gameModeElements = document.getElementsByName('TgameMode');
@@ -95,8 +98,18 @@
           }
         });
 
+        // wait for onLoadToot to be available
+        var timer = window.setInterval(function() {
+          if (onLoadToot != undefined) {
+            window.clearInterval(timer);
+            onLoadToot();
+            handleTheme();
+          } else {
+            console.log("waiting for onLoadToot to be available")
+          }
+        }, 100);
+
         window.onload = function() {
-           onLoadToot();
            handleTheme();
         };
   </script>

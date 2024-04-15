@@ -103,6 +103,8 @@ export function drawBoardToot(size, mode, playerTok) {
         table.appendChild(row);
     }
     gameBoard.appendChild(table);
+
+    setFormFieldsToot(game);
 }
 
 
@@ -118,10 +120,14 @@ function startTurn(cell_selected, game) {
     }
 
     performMove(cellId, game);
-    
+
     // AI move
-    if (!endGame(game, false) && game.mode != 0) {
+    let end = endGame(game, false);
+    if (!end && game.mode != 0) {
         getAIMove(game);
+    }
+    // if game over, alert
+    else if (end) {
         endGame(game, true);
     }
 }
@@ -293,4 +299,24 @@ export function onLoadToot() {
     else {
         drawBoardToot();
     }
+};
+
+function setFormFieldsToot(game) {
+    let boardSizeRadio = document.getElementById("board_" + game.size);
+    boardSizeRadio.checked = true;
+
+    var mode;
+    if (game.mode == null) {
+        mode = "0";
+    } else if (game.mode == Difficulty.Easy) {
+        mode = "1";
+    } else {
+        mode = "2";
+    }
+    
+    let gameModeRadio = document.getElementById("gamemode_" + mode);
+    gameModeRadio.checked = true;
+
+    let playerTokRadio = document.getElementById("player_" + game.playerTok);
+    playerTokRadio.checked = true;
 };

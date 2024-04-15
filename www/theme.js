@@ -1,5 +1,4 @@
 export function setTheme(colour, cTheme1, cTheme2, tTheme1, tTheme2, letters) {
-    console.log("setTheme");
     localStorage.setItem("colour", colour);
     localStorage.setItem("cTheme1", cTheme1);
     localStorage.setItem("cTheme2", cTheme2);
@@ -9,24 +8,20 @@ export function setTheme(colour, cTheme1, cTheme2, tTheme1, tTheme2, letters) {
 }
 
 export function getTheme() {
-    console.log("getTheme");
     let colour = localStorage.getItem("colour") || "light";
     let cTheme1 = localStorage.getItem("cTheme1") || "red";
     let cTheme2 = localStorage.getItem("cTheme2") || "yellow";
     let tTheme1 = localStorage.getItem("tTheme1") || "green";
     let tTheme2 = localStorage.getItem("tTheme2") || "pink";
-    let letters = localStorage.getItem("letters") || true;
-    console.log("getTheme, " + colour);
+    let letters = localStorage.getItem("letters") || "true";
     return [colour, cTheme1, cTheme2, tTheme1, tTheme2, letters];
 }
 
 export function handleTheme() {
-    console.log("handleTheme");
     let [colour, cTheme1, cTheme2, tTheme1, tTheme2, letters] = getTheme();
-    console.log("handleTheme, ", cTheme1);
     
     var cContent1, cContent2, tContent1, tContent2;
-    if (letters == true) {
+    if (letters == "true") {
         cContent1 = "O";
         cContent2 = "X";
         tContent1 = "T";
@@ -81,21 +76,17 @@ export function handleTheme() {
 export function setFormFields() {
     let [colour, cTheme1, cTheme2, tTheme1, tTheme2, letters] = getTheme();
     
-    console.log("colourTheme_" + colour);
     let colorThemeRadio = document.getElementById("colourTheme_" + colour);
     colorThemeRadio.checked = true;
 
     var cTheme1Select = document.getElementById("cTheme1Select");
-    for(var i = 0; i < cTheme1Select; i++) {
-        if (cTheme1Select.options.value == "cTheme1") {
-            cTheme1Select.selectedIndex = i;
-            break;
-        }
-    }
-
+    cTheme1Select.value = cTheme1;
     var cTheme2Select = document.getElementById("cTheme2Select");
+    cTheme2Select.value = cTheme2;
     var tTheme1Select = document.getElementById("tTheme1Select");
+    tTheme1Select.value = tTheme1;
     var tTheme2Select = document.getElementById("tTheme2Select");
+    tTheme2Select.value = tTheme2;
 
     if (letters == "true") {
         document.getElementById("accessibility_letters").checked = true;

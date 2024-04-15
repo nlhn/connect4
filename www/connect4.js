@@ -50,7 +50,7 @@ class GameData {
 }
 
 export function newGame(size, mode) {
-    console.log("creating new game")
+    console.log("creating new game, " + size + " " + mode);
     var game = new GameData(size, mode);
     saveGame(game);
 
@@ -109,6 +109,8 @@ export function drawBoard(size, mode) {
     }
     gameBoard.appendChild(table);
     endGame(game, false);
+
+    setFormFields(game);
 }
 
 
@@ -125,8 +127,12 @@ function getPlayerMove(cell_selected, game) {
     performMove(cellId, game);
 
     // AI move
-    if (!endGame(game, false) && game.ai != null) {
+    let end = endGame(game, false);
+    if (!end && game.ai != null) {
         getAIMove(game);
+    }
+    // if game over, alert
+    else if (end) {
         endGame(game, true);
     }
 }
@@ -249,4 +255,21 @@ export function onLoad() {
     else {
         drawBoard();
     }
+};
+
+function setFormFields(game) {
+    let boardSizeRadio = document.getElementById("board_" + game.size);
+    boardSizeRadio.checked = true;
+
+    var mode;
+    if (game.mode == null) {
+        mode = "0";
+    } else if (game.mode == Difficulty.Easy) {
+        mode = "1";
+    } else {
+        mode = "2";
+    }
+    
+    let gameModeRadio = document.getElementById("gamemode_" + mode);
+    gameModeRadio.checked = true;
 };

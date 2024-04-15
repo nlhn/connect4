@@ -23,24 +23,26 @@
       </ul>
     </div>
     <h1>Connect 4</h1>
+    <br>
     <noscript>This page contains webassembly and javascript content,
     please enable javascript in your browser.</noscript>
     <script type="module" src="./bootstrap.js"></script>
     <form>
-      <label for="boardSize">Choose a board size:</label><br>
-      <input type="radio" id="standard" name="boardSize" value="0" required>
-      <label for="standard">Standard</label><br>
-      <input type="radio" id="large" name="boardSize" value="1">
-      <label for="large">Large</label><br>
-
-      <label for="gameMode">Choose a game mode:</label><br>
-      <input type="radio" id="vsHuman" name="gameMode" value="0" required>
-      <label for="vsHuman">Vs Human</label><br>
-      <input type="radio" id="vsComputer1" name="gameMode" value="1">
-      <label for="vsComputer1">Vs Computer (Easy)</label><br>
-      <input type="radio" id="vsComputer2" name="gameMode" value="2">
-      <label for="vsComputer2">Vs Computer (Hard)</label><br>
+      <b><label for="boardSize">Choose a board size:</label></b><br>
+      <input type="radio" id="board_0" name="boardSize" value="0" required>
+      <label for="board_0">Standard</label><br>
+      <input type="radio" id="board_1" name="boardSize" value="1">
+      <label for="board_1">Large</label><br>
+      <br>
+      <b><label for="gameMode">Choose a game mode:</label></b><br>
+      <input type="radio" id="gamemode_0" name="gameMode" value="0" required>
+      <label for="gamemode_0">Vs Human</label><br>
+      <input type="radio" id="gamemode_1" name="gameMode" value="1">
+      <label for="gamemode_1">Vs Computer (Easy)</label><br>
+      <input type="radio" id="gamemode_2" name="gameMode" value="2">
+      <label for="gamemode_2">Vs Computer (Hard)</label><br>
     </form>
+    <br>
     <button id="Connect4Button">New Game</button>
     <div id="connect4GameBoard" class="gameBoard"></div>
     <div id="winnerDisplay"></div>
@@ -65,6 +67,7 @@
                 }
             }
             if (selectedSize != -1 && selectedMode != -1) {
+                console.log("html" + selectedMode);
                 newGame(selectedSize, selectedMode);
                 drawBoard(selectedSize, selectedMode, "connect4");
                 handleTheme();
@@ -72,8 +75,18 @@
 
         });
 
+        // wait for onLoad to be available
+        var timer = window.setInterval(function() {
+          if (onLoad != undefined) {
+            window.clearInterval(timer);
+            onLoad();
+            handleTheme();
+          } else {
+            console.log("waiting for onLoad to be available")
+          }
+        }, 100);
+
         window.onload = function() {
-          onLoad();
           handleTheme();
         };
     </script>

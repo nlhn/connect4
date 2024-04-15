@@ -12,7 +12,7 @@
           <a href="playConnect4.html">Connect4</a>
         </li>
         <li>
-          <a href="playTootOtto.html">OTTO/TOOT</a>
+          <a href="playTootOtto.html">TOOT/OTTO</a>
         </li>
         <li>
           <a href="howToPlay.html">How to Play</a>
@@ -29,7 +29,7 @@
       <script src="./bootstrap.js"></script>
 
       <form>
-        <label for="colourTheme">Website Theme:</label><br>
+        <b><label for="colourTheme">Website Theme:</label></b><br>
         <input type="radio" id="colourTheme_light" name="colourTheme" value="light">
         <label for="colourTheme_light">Light</label><br>
         <input type="radio" id="colourTheme_dark" name="colourTheme" value="dark">
@@ -37,7 +37,7 @@
         <input type="radio" id="colourTheme_classic" name="colourTheme" value="classic">
         <label for="colourTheme_classic">Classic</label><br>
         <br>
-        <label for="cTheme1">Connect 4 Player 1:</label><br>
+        <b><label for="cTheme1">Connect 4 Player 1:</label></b>
         <select name="cTheme1" id="cTheme1Select">
             <option value="red">Red</option>
             <option value="yellow">Yellow</option>
@@ -46,7 +46,7 @@
             <option value="pink">Pink</option>
         </select>          
         <br>
-        <label for="cTheme2">Connect 4 Player 2:</label><br>
+        <b><label for="cTheme2">Connect 4 Player 2:</label></b>
         <select name="cTheme2" id="cTheme2Select">
             <option value="red">Red</option>
             <option value="yellow">Yellow</option>
@@ -54,7 +54,8 @@
             <option value="blue">Blue</option>
             <option value="pink">Pink</option>
         </select> 
-        <label for="tTheme1">TOOT Tokens:</label><br>
+        <br>
+        <b><label for="tTheme1">TOOT Tokens:</label></b>
         <select name="tTheme1" id="tTheme1Select">
             <option value="red">Red</option>
             <option value="yellow">Yellow</option>
@@ -63,7 +64,7 @@
             <option value="pink">Pink</option>
         </select>          
         <br>
-        <label for="tTheme2">OTTO Tokens:</label><br>
+        <b><label for="tTheme2">OTTO Tokens:</label></b>
         <select name="tTheme2" id="tTheme2Select">
             <option value="red">Red</option>
             <option value="yellow">Yellow</option>
@@ -71,11 +72,11 @@
             <option value="blue">Blue</option>
             <option value="pink">Pink</option>
         </select> 
-        <br>
-        <label for="accessibility">Accessibility Toggles:</label><br>
+        <br><br>
+        <b><label for="accessibility">Accessibility Toggles:</label></b><br>
         <input type="checkbox" id="accessibility_letters" name="accessibility">
-        <label for="accessibility_letters">Include letter identifiers</label><br>
-
+        <label for="accessibility_letters">Letter identifiers on tokens</label><br>
+        <br>
         <button id="settingsButton">Update Settings</button>
     </form>
 

@@ -42,6 +42,11 @@ h1 {
     margin-bottom: 5px;
 }
 
+h3 {
+    font-size: 16px;
+    text-align: center;
+}
+
 /* Center the form and adjust the layout */
 form {
     display: block; 
