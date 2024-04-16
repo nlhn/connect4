@@ -174,6 +174,7 @@ function getAIMove(game) {
     }
     
     performMove(cellId, game);
+    endGame(game, true);
 }
 
 function getEmptyCell(selectedColumn, maxRows, maxCols) {

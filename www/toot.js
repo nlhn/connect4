@@ -1,4 +1,5 @@
 import { BoardSize,Difficulty,TootOttoBoard,OttoBot,deserialize_otto } from "connect4";
+import { handleTheme } from "./theme";
 
 class GameBoard {
     constructor(size, mode, playerTok, savedGame) {
@@ -103,6 +104,7 @@ export function drawBoardToot(size, mode, playerTok) {
         table.appendChild(row);
     }
     gameBoard.appendChild(table);
+    endGame(game, false);
 
     setFormFieldsToot(game);
 }
@@ -222,6 +224,7 @@ function performMove(cellId, game) {
     game.nextTurn();
 
     saveGame(game);
+    handleTheme(); // token changed
 }
 
 function performMoveAI(cellId, ai_token, game) {
@@ -246,6 +249,7 @@ function performMoveAI(cellId, ai_token, game) {
     game.nextTurn();
 
     saveGame(game);
+    handleTheme();
 }
 
 
