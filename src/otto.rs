@@ -204,6 +204,16 @@ impl TootOttoBoard {
         }
     }
 
+    #[wasm_bindgen]
+    pub fn gui_get_winner(&mut self) -> char {
+        let w = self.has_winner();
+        if self.is_draw() {
+            return 'd';
+        } else {
+            return w;
+        }
+    }
+
     ///Takes a column and reutrns true if a move can be made into
     ///that column. False otherwise
     #[wasm_bindgen]

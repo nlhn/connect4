@@ -54,6 +54,10 @@ export function newGameToot(size, mode, playerTok) {
 
 
 export function drawBoardToot(size, mode, playerTok) {
+    // also make radio visible
+    let tokenSelect = document.getElementById("tokens");
+    tokenSelect.setAttribute("style", "");
+
     var rows, cols, gameBoard, game;
 
     game = loadGame();
@@ -137,7 +141,8 @@ function startTurn(cell_selected, game) {
 function endGame(game, doAlert) {
     var msg;
     let winnerDisplay = document.getElementById("winnerDisplay");
-    let result = game.board.has_winner();
+    // let result = game.board.has_winner();
+    let result = game.board.gui_get_winner();
 
     if (!game.board.is_terminal()) {
         winnerDisplay.innerHTML = "Game in progress...";
@@ -184,6 +189,7 @@ function getAIMove(game) {
     }
     
     performMoveAI(cellId,token, game);
+    endGame(fame, true);
 }
 
 function getEmptyCell(selectedColumn, maxRows, maxCols) {
@@ -248,6 +254,7 @@ function performMoveAI(cellId, ai_token, game) {
     game.board.perform_move_plz(col, piece, turn);
     game.nextTurn();
 
+    endGame(game, true);
     saveGame(game);
     handleTheme();
 }

@@ -38,12 +38,12 @@ export function handleTheme() {
     let cTheme1Class = "token-" + cTheme1;
     let cTheme2Class = "token-" + cTheme2;
 
-    let cRed = document.getElementsByClassName("red-filled");
+    let cRed = document.getElementsByClassName("yellow-filled");
     for (var i = 0; i < cRed.length; i++) {
         cRed[i].classList.add(cTheme1Class);
         cRed[i].value = cContent1;
     }
-    let cYel = document.getElementsByClassName("yellow-filled");
+    let cYel = document.getElementsByClassName("red-filled");
     for (var i = 0; i < cYel.length; i++) {
         cYel[i].classList.add(cTheme2Class);
         cYel[i].value = cContent2;

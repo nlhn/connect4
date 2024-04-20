@@ -1,94 +1,110 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <title>Connect4</title>
-    <link rel="stylesheet" href="stylesheet/style.css">
-  </head>
-  <body>
-    <div id="navbar">
-      <ul>
-        <li>
-          <a>Connect4</a>
-        </li>
-        <li>
-          <a href="playTootOtto.html">OTTO/TOOT</a>
-        </li>
-        <li>
-          <a href="howToPlay.html">How to Play</a>
-        </li>
-        <li>
-          <a href="settings.html">Settings</a>
-        </li>
-      </ul>
-    </div>
-    <h1>Connect 4</h1>
-    <br>
-    <noscript>This page contains webassembly and javascript content,
+
+<head>
+  <meta charset="utf-8">
+  <title>Connect4</title>
+  <link rel="stylesheet" href="stylesheet/style.css">
+</head>
+
+<body>
+  <div id="navbar">
+    <ul>
+      <li>
+        <a>Connect4</a>
+      </li>
+      <li>
+        <a href="playTootOtto.html">OTTO/TOOT</a>
+      </li>
+      <li>
+        <a href="howToPlay.html">How to Play</a>
+      </li>
+      <li>
+        <a href="settings.html">Settings</a>
+      </li>
+    </ul>
+  </div>
+  <h1>Connect 4</h1>
+  <br>
+  <noscript>This page contains webassembly and javascript content,
     please enable javascript in your browser.</noscript>
-    <script type="module" src="./bootstrap.js"></script>
-    <form>
-      <b><label for="boardSize">Choose a board size:</label></b><br>
-      <input type="radio" id="board_0" name="boardSize" value="0" required>
-      <label for="board_0">Standard</label><br>
-      <input type="radio" id="board_1" name="boardSize" value="1">
-      <label for="board_1">Large</label><br>
-      <br>
-      <b><label for="gameMode">Choose a game mode:</label></b><br>
-      <input type="radio" id="gamemode_0" name="gameMode" value="0" required>
-      <label for="gamemode_0">Vs Human</label><br>
-      <input type="radio" id="gamemode_1" name="gameMode" value="1">
-      <label for="gamemode_1">Vs Computer (Easy)</label><br>
-      <input type="radio" id="gamemode_2" name="gameMode" value="2">
-      <label for="gamemode_2">Vs Computer (Hard)</label><br>
-    </form>
+  <script type="module" src="./bootstrap.js"></script>
+  <form>
+    <b><label for="boardSize">Choose a board size:</label></b><br>
+    <input type="radio" id="board_0" name="boardSize" value="0" required>
+    <label for="board_0">Standard</label><br>
+    <input type="radio" id="board_1" name="boardSize" value="1">
+    <label for="board_1">Large</label><br>
     <br>
-    <button id="Connect4Button">New Game</button>
-    <div id="connect4GameBoard" class="gameBoard"></div>
-    <div id="winnerDisplay"></div>
-    <script>
-        document.getElementById('Connect4Button').addEventListener('click', function() {
-            var boardSizeElements = document.getElementsByName('boardSize');
-            var gameModeElements = document.getElementsByName('gameMode');
-            var selectedSize = -1;
-            var selectedMode = -1;
+    <b><label for="gameMode">Choose a game mode:</label></b><br>
+    <input type="radio" id="gamemode_0" name="gameMode" value="0" required>
+    <label for="gamemode_0">Vs Human</label><br>
+    <input type="radio" id="gamemode_1" name="gameMode" value="1">
+    <label for="gamemode_1">Vs Computer (Easy)</label><br>
+    <input type="radio" id="gamemode_2" name="gameMode" value="2">
+    <label for="gamemode_2">Vs Computer (Hard)</label><br>
+  </form>
+  <br>
+  <div class="token-legend">
+    <div class="outrow" id="legend">
+      <div class="outcol">
+        <label for="faketoken_1" class="fake-token-label">Player 1</label>
+        <input name="faketoken_1" class="fake-token cell empty-cell yellow-filled" disabled="disabled"></input>
+      </div>
+      <div class="outcol">
+        <label for="faketoken_2" class="fake-token-label">Player 2</label>
+        <input name="faketoken_2" class="fake-token cell empty-cell red-filled" disabled="disabled"></input>
+      </div>
+    </div>
+  </div>
+  <br>
+  <button id="Connect4Button">New Game</button>
+  <div id="connect4GameBoard" class="gameBoard"></div>
+  <div id="winnerDisplay"></div>
+  <script>
+    document.getElementById('Connect4Button').addEventListener('click', function () {
+      var boardSizeElements = document.getElementsByName('boardSize');
+      var gameModeElements = document.getElementsByName('gameMode');
+      var selectedSize = -1;
+      var selectedMode = -1;
 
-            for (var i = 0; i < boardSizeElements.length; i++) {
-                if (boardSizeElements[i].checked) {
-                    selectedSize = parseInt(boardSizeElements[i].value, 10);
-                    break;
-                }
-            }
+      for (var i = 0; i < boardSizeElements.length; i++) {
+        if (boardSizeElements[i].checked) {
+          selectedSize = parseInt(boardSizeElements[i].value, 10);
+          break;
+        }
+      }
 
-            for (var i = 0; i < gameModeElements.length; i++) {
-                if (gameModeElements[i].checked) {
-                    selectedMode = parseInt(gameModeElements[i].value, 10);
-                    break;
-                }
-            }
-            if (selectedSize != -1 && selectedMode != -1) {
-                console.log("html" + selectedMode);
-                newGame(selectedSize, selectedMode);
-                drawBoard(selectedSize, selectedMode, "connect4");
-                handleTheme();
-            }
+      for (var i = 0; i < gameModeElements.length; i++) {
+        if (gameModeElements[i].checked) {
+          selectedMode = parseInt(gameModeElements[i].value, 10);
+          break;
+        }
+      }
+      if (selectedSize != -1 && selectedMode != -1) {
+        console.log("html" + selectedMode);
+        newGame(selectedSize, selectedMode);
+        drawBoard(selectedSize, selectedMode, "connect4");
+        handleTheme();
+      }
 
-        });
+    });
 
-        // wait for onLoad to be available
-        var timer = window.setInterval(function() {
-          if (onLoad != undefined) {
-            window.clearInterval(timer);
-            onLoad();
-            handleTheme();
-          } else {
-            console.log("waiting for onLoad to be available")
-          }
-        }, 100);
+    // wait for onLoad to be available
+    var timer = window.setInterval(function () {
+      if (onLoad != undefined) {
+        window.clearInterval(timer);
+        onLoad();
+        handleTheme();
+      } else {
+        console.log("waiting for onLoad to be available")
+      }
+    }, 100);
 
-        window.onload = function() {
-          handleTheme();
-        };
-    </script>
-  </body>
+    window.onload = function () {
+      handleTheme();
+    };
+  </script>
+</body>
+
 </html>
