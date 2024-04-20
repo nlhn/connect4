@@ -30,17 +30,17 @@
     <form>
       <b><label for="TboardSize">Choose a board size:</label></b><br>
       <input type="radio" id="board_0" name="TboardSize" value="0" required>
-      <label for="standard">Standard</label><br>
+      <label for="board_0">Standard</label><br>
       <input type="radio" id="board_1" name="TboardSize" value="1">
-      <label for="large">Large</label><br>
+      <label for="board_1">Large</label><br>
       <br>
       <b><label for="TgameMode">Choose a game mode:</label></b><br>
       <input type="radio" id="gamemode_0" name="TgameMode" value="0" required>
-      <label for="vsHuman">VS Human</label><br>
+      <label for="gamemode_0">VS Human</label><br>
       <input type="radio" id="gamemode_1" name="TgameMode" value="1">
-      <label for="vsComputer1">VS Computer (Easy)</label><br>
+      <label for="gamemode_1">VS Computer (Easy)</label><br>
       <input type="radio" id="gamemode_2" name="TgameMode" value="2">
-      <label for="vsComputer2">VS Computer (Hard)</label><br>
+      <label for="gamemode_2">VS Computer (Hard)</label><br>
     
       <br>
       <b><label for="TplayAs">Player (Player 1 if PVP) will play as:</label></b><br>
@@ -72,6 +72,7 @@
     </div>
     <div id="TootOttoGameBoard" class="gameBoard"></div>
     <div id="winnerDisplay"></div>
+    <br><br><br><br>
     <script>    
       document.getElementById('TootOttoButton').addEventListener('click', function() {
           var boardSizeElements = document.getElementsByName('TboardSize');

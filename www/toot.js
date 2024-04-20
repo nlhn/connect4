@@ -316,16 +316,15 @@ function setFormFieldsToot(game) {
     let boardSizeRadio = document.getElementById("board_" + game.size);
     boardSizeRadio.checked = true;
 
-    var mode;
-    if (game.mode == null) {
-        mode = "0";
-    } else if (game.mode == Difficulty.Easy) {
-        mode = "1";
-    } else {
-        mode = "2";
-    }
+    // if (game.mode == null) {
+    //     mode = "0";
+    // } else if (game.mode == Difficulty.Easy) {
+    //     mode = "1";
+    // } else {
+    //     mode = "2";
+    // }
     
-    let gameModeRadio = document.getElementById("gamemode_" + mode);
+    let gameModeRadio = document.getElementById("gamemode_" + game.mode);
     gameModeRadio.checked = true;
 
     let playerTokRadio = document.getElementById("player_" + game.playerTok);
